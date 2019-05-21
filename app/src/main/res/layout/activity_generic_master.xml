@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,11 +9,30 @@
     android:orientation="vertical"
     tools:context=".GenericMasterActivity">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/generic_text_view_heading"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/menu_sleep"
+        android:textAlignment="center" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
     <ViewFlipper
         android:id="@+id/view_flipper"
@@ -21,19 +41,43 @@
 
         <include
             android:id="@+id/sleep"
-            layout="@layout/sleep"/>
+            layout="@layout/sleep" />
 
         <include
             android:id="@+id/meals"
-            layout="@layout/meals"/>
+            layout="@layout/meals" />
 
     </ViewFlipper>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <TextView
+        android:id="@+id/generic_text_view_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:lines="2"
+        android:maxLines="2"
+        android:text=""
+        android:textAlignment="center" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/generic_button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/holo_green_dark"
+        android:text="Save" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
