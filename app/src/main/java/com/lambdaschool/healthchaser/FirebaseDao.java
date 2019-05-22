@@ -1,11 +1,13 @@
 package com.lambdaschool.healthchaser;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.lambdaschool.healthchaser.MainActivity;
 import com.lambdaschool.healthchaser.healthpoints.Sleep;
@@ -17,11 +19,12 @@ import static com.lambdaschool.healthchaser.MainActivity.*;
 
 class FirebaseDao {
 
+    public interface TrackingCategoryCallback {
+        void onNodesObtained(ArrayList<String> stringArrayList);
+    }
 
+    static void getAllEntriesForSpecifiedTrackingCategory(String trackingNodeName, final Tracking trackingType, final TrackingCategoryCallback callback) {
 
-    static ArrayList<String> getAllEntriesForSpecifiedTrackingCategory(String trackingNodeName, final Tracking trackingType) {
-
-        //final CountDownLatch countDownLatch=new CountDownLatch(1);
         final ArrayList<String> stringArrayList = new ArrayList<>();
 
         String path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
@@ -32,8 +35,10 @@ class FirebaseDao {
 
         firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                /*GenericTypeIndicator<ArrayList<Sleep>> ids = new GenericTypeIndicator<ArrayList<Sleep>>() {};
+                ArrayList<Sleep> sleepArrayList=dataSnapshot.getValue(ids);*/
                 Iterable<DataSnapshot> childrenNodes = dataSnapshot.getChildren();
                 for (DataSnapshot ds : childrenNodes) {
                     switch (trackingType) {
@@ -57,22 +62,14 @@ class FirebaseDao {
                             break;
                     }
                 }
-                //countDownLatch.countDown();
+
+                callback.onNodesObtained(stringArrayList);
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("DAO", "Failed to read value.", error.toException());
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onNodesObtained(new ArrayList<String>());
             }
         });
-
-/*        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
-        return stringArrayList;
     }
 }
