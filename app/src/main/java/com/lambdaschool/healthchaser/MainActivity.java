@@ -27,16 +27,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lambdaschool.healthchaser.healthpoints.LoggedInUser;
 import com.lambdaschool.healthchaser.healthpoints.Sleep;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_CODE_SIGN_IN = 55;
-    private FirebaseUser currentUser;
+    static LoggedInUser currentLoggedInUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +87,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                ((TextView) findViewById(R.id.main_text_view)).append(" " + currentUser.getDisplayName());
+                currentLoggedInUser = new LoggedInUser(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()));
+                ((TextView) findViewById(R.id.main_text_view)).append(" " + currentLoggedInUser.getDisplayName());
 
             } else {
                 // Sign in failed. If response is null the user canceled the

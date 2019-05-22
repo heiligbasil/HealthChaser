@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class Sleep {
+
     private long sleepTime, awakeTime;
     private int quality, feeling;
 

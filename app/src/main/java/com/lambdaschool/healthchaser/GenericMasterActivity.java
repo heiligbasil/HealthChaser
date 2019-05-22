@@ -29,16 +29,10 @@ public class GenericMasterActivity extends AppCompatActivity {
         viewFlipper.setDisplayedChild(0);
 
 
-/*        String displayName = currentUser.getDisplayName();
-        String email = currentUser.getEmail();
-        Uri photoUrl = currentUser.getPhotoUrl();
-        String uid = currentUser.getUid();*/
-
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users/" + "sUkjbGqEqTQgljCKI66qfPEzJ2P2" + "/sleep");
+        DatabaseReference myRef = database.getReference("users/" + MainActivity.currentLoggedInUser.getUserId() + "/sleep");
         //DatabaseReference myRef2 = myRef.child(uid);
-        Sleep sleep = new Sleep(1558496486412L, 1558497802951L, -2, -3);
+        Sleep sleep = new Sleep(1558496476412L, 1558497702951L, 0, 3);
         myRef.child(String.valueOf(System.currentTimeMillis())).setValue(sleep);
 
 
