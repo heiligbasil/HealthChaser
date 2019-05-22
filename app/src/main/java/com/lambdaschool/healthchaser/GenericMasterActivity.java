@@ -78,6 +78,7 @@ public class GenericMasterActivity extends AppCompatActivity {
                 genericMasterActivityAdapter = new GenericMasterActivityAdapter(stringArrayList);
                 recyclerView.setAdapter(genericMasterActivityAdapter);
                 recyclerView.setHasFixedSize(false);
+                genericMasterActivityAdapter.notifyDataSetChanged();
             }
         });
 
