@@ -28,7 +28,7 @@ class FirebaseDao {
 //        Sleep sleep = new Sleep(1558496476412L, 1558497702951L, 0, 3);
 //        firebaseReference.child(String.valueOf(System.currentTimeMillis())).setValue(sleep);
 
-        firebaseReference.addValueEventListener(new ValueEventListener() {
+        firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

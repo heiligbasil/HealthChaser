@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ViewFlipper;
 
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +31,7 @@ public class GenericMasterActivity extends AppCompatActivity {
     private static final String TAG = "GenericMasterActivity";
     ArrayList<String> stringArrayList = new ArrayList<>();
     private Tracking trackingType;
+    private GenericMasterActivityAdapter genericMasterActivityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class GenericMasterActivity extends AppCompatActivity {
         firebaseViewModel.getAllEntriesForSpecifiedTrackingCategory(trackingNodeName,trackingType).observe(this, new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(@Nullable ArrayList<String> stringArrayList) {
-                GenericMasterActivityAdapter genericMasterActivityAdapter = new GenericMasterActivityAdapter(stringArrayList);
+                genericMasterActivityAdapter = new GenericMasterActivityAdapter(stringArrayList);
                 recyclerView.setAdapter(genericMasterActivityAdapter);
                 recyclerView.setHasFixedSize(false);
             }
@@ -85,7 +88,7 @@ public class GenericMasterActivity extends AppCompatActivity {
 
 
 
-        String path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
+      /*  String path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
         DatabaseReference firebaseReference = FirebaseDatabase.getInstance().getReference(path);
 
 
@@ -127,11 +130,18 @@ public class GenericMasterActivity extends AppCompatActivity {
                 // Failed to read value
                 Log.e(TAG, "Failed to read value.", error.toException());
             }
-        });
+        });*/
 
 
         ViewFlipper viewFlipper = findViewById(R.id.view_flipper);
         viewFlipper.setDisplayedChild(viewFlipperDisplayChild);
 
+
+        ((Button)findViewById(R.id.generic_button_save)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                genericMasterActivityAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

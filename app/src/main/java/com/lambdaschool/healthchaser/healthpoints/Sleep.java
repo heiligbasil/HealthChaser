@@ -34,6 +34,12 @@ public class Sleep {
         return simpleDateFormat.format(this.sleepTime);
     }
 
+    public String translateSleepDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+
+        return simpleDateFormat.format(this.sleepTime);
+    }
+
     public long getAwakeTime() {
         return awakeTime;
     }
@@ -133,7 +139,7 @@ public class Sleep {
     @NonNull
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(), "You went to bed at %s and woke up at %s. Quality of sleep was %s and you felt %s.",
-                translateSleepTime(), translateAwakeTime(), translateQuality(), translateFeeling());
+        return String.format(Locale.getDefault(), "On %s you went to bed at %s and woke up at %s. Quality of sleep was %s and you felt %s.",
+                translateSleepDate(), translateSleepTime(), translateAwakeTime(), translateQuality(), translateFeeling());
     }
 }
