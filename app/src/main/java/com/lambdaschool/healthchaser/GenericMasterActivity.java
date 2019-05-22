@@ -10,29 +10,24 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.lambdaschool.healthchaser.healthpoints.Sleep;
 
 import java.util.ArrayList;
 
 import static com.lambdaschool.healthchaser.MainActivity.Tracking;
-import static com.lambdaschool.healthchaser.MainActivity.currentLoggedInUser;
 
-public class GenericMasterActivity extends AppCompatActivity {
+public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener {
 
     private static final String TAG = "GenericMasterActivity";
     ArrayList<String> stringArrayList = new ArrayList<>();
     private Tracking trackingType;
     private GenericMasterActivityAdapter genericMasterActivityAdapter;
+    static String timeFromPickerDialog;
+    static String viewToUpdateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +68,7 @@ public class GenericMasterActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FirebaseViewModel firebaseViewModel = ViewModelProviders.of(this).get(FirebaseViewModel.class);
-        firebaseViewModel.getAllEntriesForSpecifiedTrackingCategory(trackingNodeName,trackingType).observe(this, new Observer<ArrayList<String>>() {
+        firebaseViewModel.getAllEntriesForSpecifiedTrackingCategory(trackingNodeName, trackingType).observe(this, new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(@Nullable ArrayList<String> stringArrayList) {
                 genericMasterActivityAdapter = new GenericMasterActivityAdapter(stringArrayList);
@@ -139,7 +134,7 @@ public class GenericMasterActivity extends AppCompatActivity {
         viewFlipper.setDisplayedChild(viewFlipperDisplayChild);
 
 
-        ((Button)findViewById(R.id.generic_button_save)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.generic_button_save)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 genericMasterActivityAdapter.notifyDataSetChanged();
@@ -149,6 +144,17 @@ public class GenericMasterActivity extends AppCompatActivity {
 
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
+        newFragment.setCancelable(false);
+        viewToUpdateTime= (String) v.getTag();
         newFragment.show(getSupportFragmentManager(), "timePicker");
+
+        /*if (v.getTag().toString().equals("bed_time")) {
+            ((TextView)findViewById(R.id.sleep_text_view_sleep_time)).append(timeFromPickerDialog);
+        }*/
+    }
+
+    @Override
+    public void onComplete(String time) {
+        ((TextView)findViewById(R.id.sleep_text_view_sleep_time)).append(time);
     }
 }

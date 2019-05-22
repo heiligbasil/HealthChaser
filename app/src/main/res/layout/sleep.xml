@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/sleep_text_view_bed_time"
+        android:id="@+id/sleep_text_view_sleep_time"
         android:layout_width="193dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -19,15 +19,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/sleep_image_button_bed_time"
+        android:id="@+id/sleep_image_button_sleep_time"
         android:layout_width="193dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="showTimePickerDialog"
+        android:tag="sleep_time"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sleep_text_view_bed_time"
-        android:onClick="showTimePickerDialog"
+        app:layout_constraintTop_toBottomOf="@+id/sleep_text_view_sleep_time"
         app:srcCompat="@android:color/holo_orange_light" />
 
     <TextView
@@ -41,7 +42,7 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/sleep_text_view_bed_time"
+        app:layout_constraintStart_toEndOf="@+id/sleep_text_view_sleep_time"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -54,7 +55,7 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/sleep_image_button_bed_time"
+        app:layout_constraintStart_toEndOf="@+id/sleep_image_button_sleep_time"
         app:layout_constraintTop_toBottomOf="@+id/sleep_text_view_awake_time"
         app:srcCompat="@android:color/holo_green_light" />
 

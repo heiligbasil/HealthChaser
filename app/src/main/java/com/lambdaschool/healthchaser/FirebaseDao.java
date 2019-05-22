@@ -17,6 +17,8 @@ import static com.lambdaschool.healthchaser.MainActivity.*;
 
 class FirebaseDao {
 
+
+
     static ArrayList<String> getAllEntriesForSpecifiedTrackingCategory(String trackingNodeName, final Tracking trackingType) {
 
         //final CountDownLatch countDownLatch=new CountDownLatch(1);
