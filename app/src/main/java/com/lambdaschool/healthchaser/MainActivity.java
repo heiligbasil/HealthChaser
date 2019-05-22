@@ -1,9 +1,11 @@
 package com.lambdaschool.healthchaser;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,20 +17,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.lambdaschool.healthchaser.healthpoints.Sleep;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int RC_SIGN_IN = 55;
+    private static final int REQUEST_CODE_SIGN_IN = 55;
     private FirebaseUser currentUser;
 
     @Override
@@ -48,7 +55,7 @@ public class MainActivity extends AppCompatActivity
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
                         .build(),
-                RC_SIGN_IN);
+                REQUEST_CODE_SIGN_IN);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,14 +80,15 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == REQUEST_CODE_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
                 ((TextView) findViewById(R.id.main_text_view)).append(" " + currentUser.getDisplayName());
-                // ...
+
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
@@ -131,7 +139,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.navigation_menu_summary) {
 
         } else if (id == R.id.navigation_menu_sleep) {
-            Intent intent=new Intent(this,GenericMasterActivity.class);
+            Intent intent = new Intent(this, GenericMasterActivity.class);
             startActivity(intent);
         } else if (id == R.id.navigation_menu_meals) {
 

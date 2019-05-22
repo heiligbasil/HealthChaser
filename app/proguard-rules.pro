@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# These lines for Firebase serialization & deserialization
+-keepattributes Signature
+
+-keepclassmembers class com.lambdaschool.healthchaser.healthpoints.** {
+  *;
+}
