@@ -26,9 +26,9 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    static enum Tracking {SLEEP, MEALS, MOOD, WATER, EXERCISE, RESTROOM, HYGIENE, MEDITATION}
+    public enum Tracking {SLEEP, MEALS, MOOD, WATER, EXERCISE, RESTROOM, HYGIENE, MEDITATION}
 
-    static LoggedInUser currentLoggedInUser;
+    public static LoggedInUser currentLoggedInUser;
     private static final int REQUEST_CODE_SIGN_IN = 55;
 
     @Override
