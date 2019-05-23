@@ -35,12 +35,12 @@ import java.util.Locale;
 import static com.lambdaschool.healthchaser.MainActivity.Tracking;
 import static com.lambdaschool.healthchaser.MainActivity.currentLoggedInUser;
 
-public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener, SeekBarFragment.OnFragmentInteractionListener {
+public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener, SeekBarFragment.OnSeekBarFragmentInteractionListener,NumberPickerFragment.OnNumberPickerFragmentInteractionListener {
 
     private Tracking trackingType;
     private String path;
     private GenericMasterActivityAdapter genericMasterActivityAdapter;
-    static String viewToUpdateTime;
+    static String corespondingTaggedView;
     private Object object;
     private ImageButton pickerButton;
     private Button buttonSave;
@@ -174,7 +174,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
     public void showTimePickerDialog(View v) {
         pickerButton = (ImageButton) v;
-        viewToUpdateTime = (String) pickerButton.getTag();
+        corespondingTaggedView = (String) pickerButton.getTag();
 
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.setCancelable(false);
@@ -192,7 +192,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         TextView textViewById;
         String textToAppend;
 
-        switch (viewToUpdateTime) {
+        switch (corespondingTaggedView) {
             case "sleep_time": {
                 calendar.add(Calendar.DATE, -1);
                 long timeInMillis = calendar.getTimeInMillis();
@@ -288,12 +288,12 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
     public void showSeekBarDialog(View v) {
         pickerButton = (ImageButton) v;
-        viewToUpdateTime = (String) pickerButton.getTag();
+        corespondingTaggedView = (String) pickerButton.getTag();
 
         HashMap<Integer, String> mapOfDescriptions = new HashMap<>();
         String textToDisplayPrefix;
 
-        switch (viewToUpdateTime) {
+        switch (corespondingTaggedView) {
             case "sleep_quality": {
                 mapOfDescriptions.putAll(Sleep.sleepQualities);
                 textToDisplayPrefix = "Sleep quality: ";
@@ -327,6 +327,11 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             case "mood_reason": {
                 mapOfDescriptions.putAll(Mood.moodReasons);
                 textToDisplayPrefix = "Mood reason: ";
+                break;
+            }
+            case "intake_frequency": {
+                mapOfDescriptions.putAll(Water.intakeFrequencies);
+                textToDisplayPrefix = "Intake frequency: ";
                 break;
             }
             case "exercise_type": {
@@ -382,17 +387,14 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     }
 
     @Override
-    public void onFragmentInteraction(int seekBarSelection) {
+    public void onSeekBarFragmentInteraction(int seekBarSelection) {
 
         TextView textViewById;
         String textToAppend;
 
-        String translation = Sleep.sleepQualities.get(seekBarSelection);
+        String translation;
 
-        if (translation == null)
-            translation = "indeterminate";
-
-        switch (viewToUpdateTime) {
+        switch (corespondingTaggedView) {
             case "sleep_quality": {
                 ((Sleep) object).setSleepQuality(seekBarSelection);
                 translation = Sleep.sleepQualities.get(seekBarSelection);
@@ -442,6 +444,13 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 textToAppend = "The reason for your mood is " + translation + ". ";
                 break;
             }
+            case "intake_frequency": {
+                ((Water) object).setIntakeFrequency(seekBarSelection);
+                translation = Water.intakeFrequencies.get(seekBarSelection);
+                textViewById = findViewById(R.id.water_text_view_intake_frequency);
+                textToAppend = "You described your water intake frequency as " + translation + ". ";
+                break;
+            }
             case "exercise_type": {
                 ((Exercise) object).setExerciseType(seekBarSelection);
                 translation = Exercise.exerciseTypes.get(seekBarSelection);
@@ -467,14 +476,14 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 ((Hygiene) object).setHygieneType(seekBarSelection);
                 translation = Hygiene.hygieneTypes.get(seekBarSelection);
                 textViewById = findViewById(R.id.hygiene_text_view_type);
-                textToAppend = "Your hygiene method " + translation + ". ";
+                textToAppend = "Your hygiene method was " + translation + ". ";
                 break;
             }
             case "hygiene_temperature": {
                 ((Hygiene) object).setHygieneTemperature(seekBarSelection);
                 translation = Hygiene.hygieneTemperatures.get(seekBarSelection);
                 textViewById = findViewById(R.id.hygiene_text_view_temperature);
-                textToAppend = "Your hygiene temperature " + translation + ". ";
+                textToAppend = "Your hygiene temperature was " + translation + ". ";
                 break;
             }
             case "meditation_type": {
@@ -502,6 +511,154 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         textViewById.append(" " + translation);
         textViewById.setBackgroundColor(Color.YELLOW);
         textViewResults.append(" " + textToAppend);
+
+        pickerButton.setEnabled(false);
+        pickerButton.setImageResource(R.color.colorGray);
+        currentDataCollected++;
+
+        if (currentDataCollected == maxDataToCollect) {
+            buttonSave.setEnabled(true);
+        }
+    }
+
+    public void showNumberPickerDialog(View v) {
+        pickerButton = (ImageButton) v;
+        corespondingTaggedView = (String) pickerButton.getTag();
+
+        String unitsForNumberPicker;
+        int minValueForNumberPicker;
+        int maxValueForNumberPicker;
+
+        switch (corespondingTaggedView) {
+            case "food_amount": {
+                unitsForNumberPicker = "portions";
+                minValueForNumberPicker = 0;
+                maxValueForNumberPicker = 9;
+                break;
+            }
+            case "water_quantity": {
+                unitsForNumberPicker = "glasses";
+                minValueForNumberPicker = 0;
+                maxValueForNumberPicker = 10;
+                break;
+            }
+            case "exercise_duration": {
+                unitsForNumberPicker = "minutes";
+                minValueForNumberPicker = 0;
+                maxValueForNumberPicker = 120;
+                break;
+            }
+            case "restroom_duration": {
+                unitsForNumberPicker = "minutes";
+                minValueForNumberPicker = 0;
+                maxValueForNumberPicker = 20;
+                break;
+            }
+            case "restroom_amount": {
+                unitsForNumberPicker = "visits";
+                minValueForNumberPicker = 0;
+                maxValueForNumberPicker = 5;
+                break;
+            }
+            case "hygiene_duration": {
+                unitsForNumberPicker = "minutes";
+                minValueForNumberPicker = 0;
+                maxValueForNumberPicker = 45;
+                break;
+            }
+            case "meditation_duration": {
+                unitsForNumberPicker = "minutes";
+                minValueForNumberPicker = 0;
+                maxValueForNumberPicker = 60;
+                break;
+            }
+            default: {
+                unitsForNumberPicker = "error";
+                minValueForNumberPicker = 0;
+                maxValueForNumberPicker = 0;
+                break;
+            }
+        }
+
+        NumberPickerFragment numberPickerFragment = new NumberPickerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(NumberPickerFragment.ARG_PARAM1, unitsForNumberPicker);
+        bundle.putInt(NumberPickerFragment.ARG_PARAM2, minValueForNumberPicker);
+        bundle.putInt(NumberPickerFragment.ARG_PARAM3, maxValueForNumberPicker);
+        numberPickerFragment.setArguments(bundle);
+
+        numberPickerFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
+        numberPickerFragment.show(getSupportFragmentManager(), NumberPickerFragment.ARG_PARAM1);
+    }
+
+    @Override
+    public void onNumberPickerFragmentInteraction(int numberPickerSelection) {
+
+        TextView textViewById;
+        String textToAppend;
+        String translation;
+
+        switch (corespondingTaggedView) {
+            case "food_amount": {
+                ((Meals) object).setFoodAmount(numberPickerSelection);
+                translation = " "+numberPickerSelection+" portions";
+                textViewById = findViewById(R.id.meals_text_view_food_amount);
+                textToAppend = " You ate " + translation + ". ";
+                break;
+            }
+            case "water_quantity": {
+                ((Water) object).setWaterQuantity(numberPickerSelection);
+                translation = " "+numberPickerSelection+ " glasses";
+                textViewById = findViewById(R.id.water_text_view_quantity);
+                textToAppend = " You drank " + translation + ". ";
+                break;
+            }
+            case "exercise_duration": {
+                ((Exercise) object).setExerciseDuration(numberPickerSelection);
+                translation = " "+numberPickerSelection+" minutes";
+                textViewById = findViewById(R.id.exercise_text_view_duration);
+                textToAppend = " You exercised for " + translation + ". ";
+                break;
+            }
+            case "restroom_duration": {
+                ((Restroom) object).setRestroomDuration(numberPickerSelection);
+                translation = " "+numberPickerSelection+" minutes";
+                textViewById = findViewById(R.id.restroom_text_view_duration);
+                textToAppend = " Your restroom visits lasted an average of " + translation + ". ";
+                break;
+            }
+            case "restroom_amount": {
+                ((Restroom) object).setRestroomAmount(numberPickerSelection);
+                translation = " "+numberPickerSelection+" times";
+                textViewById = findViewById(R.id.restroom_text_view_amount);
+                textToAppend = " You visited the restroom " + translation + ". ";
+                break;
+            }
+            case "hygiene_duration": {
+                ((Hygiene) object).setHygieneDuration(numberPickerSelection);
+                translation = " "+numberPickerSelection+" minutes";
+                textViewById = findViewById(R.id.hygiene_text_view_duration);
+                textToAppend = " Your hygiene time lasted " + translation + ". ";
+                break;
+            }
+            case "meditation_duration": {
+                ((Meditation) object).setMeditationDuration(numberPickerSelection);
+                translation = " "+numberPickerSelection+" minutes";
+                textViewById = findViewById(R.id.meditation_text_view_duration);
+                textToAppend = " You spent " + translation + " in meditation. ";
+                break;
+            }
+            default: {
+                textViewById = findViewById(R.id.generic_text_view_results);
+                textToAppend = " error. ";
+                translation = " An unexpected occurrence: ";
+                break;
+            }
+        }
+
+        textViewById.append(translation);
+        textViewById.setBackgroundColor(Color.YELLOW);
+        textViewResults.append(textToAppend);
 
         pickerButton.setEnabled(false);
         pickerButton.setImageResource(R.color.colorGray);
