@@ -8,11 +8,11 @@ import java.util.ArrayList;
 
 class FirebaseRepository {
 
-    MutableLiveData<ArrayList<String>> getTheGoods(String trackingNodeName, Tracking trackingType) {
+    MutableLiveData<ArrayList<String>> getTheGoods(String nodePath, Tracking trackingType) {
 
         final MutableLiveData<ArrayList<String>> mutableLiveDataList = new MutableLiveData<>();
 
-        FirebaseDao.getAllEntriesForSpecifiedTrackingCategory(trackingNodeName, trackingType, new FirebaseDao.TrackingCategoryCallback() {
+        FirebaseDao.getAllEntriesForSpecifiedTrackingCategory(nodePath, trackingType, new FirebaseDao.TrackingCategoryCallback() {
             @Override
             public void onNodesObtained(final ArrayList<String> stringArrayList) {
                 new Thread(new Runnable() {

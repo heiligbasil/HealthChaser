@@ -30,8 +30,8 @@ import static com.lambdaschool.healthchaser.MainActivity.currentLoggedInUser;
 
 public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener, SeekBarFragment.OnFragmentInteractionListener {
 
-    private static final String TAG = "GenericMasterActivity";
     private Tracking trackingType;
+    private String path;
     private GenericMasterActivityAdapter genericMasterActivityAdapter;
     static String viewToUpdateTime;
     private Object object;
@@ -47,7 +47,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
         Intent intent = getIntent();
         trackingType = (Tracking) intent.getSerializableExtra("tracking");
-        final String trackingNodeName;
+        String trackingNodeName;
         int viewFlipperDisplayChild;
 
         switch (trackingType) {
@@ -92,11 +92,13 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 break;
         }
 
+        path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
+
         final RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FirebaseViewModel firebaseViewModel = ViewModelProviders.of(this).get(FirebaseViewModel.class);
-        firebaseViewModel.getAllEntriesForSpecifiedTrackingCategory(trackingNodeName, trackingType).observe(this, new Observer<ArrayList<String>>() {
+        firebaseViewModel.getAllEntriesForSpecifiedTrackingCategory(path, trackingType).observe(this, new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(@Nullable ArrayList<String> stringArrayList) {
                 genericMasterActivityAdapter = new GenericMasterActivityAdapter(stringArrayList);
@@ -116,7 +118,6 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             @Override
             public void onClick(View v) {
 
-                String path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
                 DatabaseReference firebaseReference = FirebaseDatabase.getInstance().getReference(path);
                 firebaseReference.child(String.valueOf(System.currentTimeMillis())).setValue(object);
 
@@ -145,9 +146,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         calendar.set(Calendar.SECOND, 0);
 
         TextView textViewById;
-
         String textToAppend;
-
 
         switch (viewToUpdateTime) {
             case "sleep_time": {
@@ -235,13 +234,12 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     public void onFragmentInteraction(int seekBarSelection) {
 
         TextView textViewById;
+        String textToAppend;
 
         String translation = Sleep.qualities.get(seekBarSelection);
 
         if (translation == null)
             translation = "indeterminate";
-
-        String textToAppend;
 
         switch (viewToUpdateTime) {
             case "sleep_quality": {

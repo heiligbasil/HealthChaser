@@ -13,18 +13,18 @@ public class FirebaseViewModel extends ViewModel {
     private MutableLiveData<ArrayList<String>> mutableLiveDataList;
     private FirebaseRepository firebaseRepository;
 
-    public LiveData<ArrayList<String>> getAllEntriesForSpecifiedTrackingCategory(String trackingNodeName, Tracking trackingType) {
+    public LiveData<ArrayList<String>> getAllEntriesForSpecifiedTrackingCategory(String nodePath, Tracking trackingType) {
 
         if (mutableLiveDataList == null) {
-            stuffTheGoods(trackingNodeName, trackingType);
+            stuffTheGoods(nodePath, trackingType);
         }
 
         return mutableLiveDataList;
     }
 
-    private void stuffTheGoods(String trackingNodeName, Tracking trackingType) {
+    private void stuffTheGoods(String nodePath, Tracking trackingType) {
         firebaseRepository = new FirebaseRepository();
-        mutableLiveDataList = firebaseRepository.getTheGoods(trackingNodeName, trackingType);
+        mutableLiveDataList = firebaseRepository.getTheGoods(nodePath, trackingType);
     }
 
 }

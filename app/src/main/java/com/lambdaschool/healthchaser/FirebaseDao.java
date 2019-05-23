@@ -1,21 +1,17 @@
 package com.lambdaschool.healthchaser;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-import com.lambdaschool.healthchaser.MainActivity;
 import com.lambdaschool.healthchaser.healthpoints.Sleep;
 
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
-import static com.lambdaschool.healthchaser.MainActivity.*;
+import static com.lambdaschool.healthchaser.MainActivity.Tracking;
 
 class FirebaseDao {
 
@@ -23,15 +19,11 @@ class FirebaseDao {
         void onNodesObtained(ArrayList<String> stringArrayList);
     }
 
-    static void getAllEntriesForSpecifiedTrackingCategory(String trackingNodeName, final Tracking trackingType, final TrackingCategoryCallback callback) {
+    static void getAllEntriesForSpecifiedTrackingCategory(String nodePath, final Tracking trackingType, final TrackingCategoryCallback callback) {
 
         final ArrayList<String> stringArrayList = new ArrayList<>();
 
-        String path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
-        DatabaseReference firebaseReference = FirebaseDatabase.getInstance().getReference(path);
-
-//        Sleep sleep = new Sleep(1558496476412L, 1558497702951L, 0, 3);
-//        firebaseReference.child(String.valueOf(System.currentTimeMillis())).setValue(sleep);
+        DatabaseReference firebaseReference = FirebaseDatabase.getInstance().getReference(nodePath);
 
         firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -40,6 +32,7 @@ class FirebaseDao {
                 /*GenericTypeIndicator<List<Sleep>> ids = new GenericTypeIndicator<List<Sleep>>() {};
                 List<Sleep> sleepArrayList=dataSnapshot.getValue(ids);*/
                 Iterable<DataSnapshot> childrenNodes = dataSnapshot.getChildren();
+
                 for (DataSnapshot ds : childrenNodes) {
                     switch (trackingType) {
                         case SLEEP:
