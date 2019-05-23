@@ -25,6 +25,7 @@ import com.lambdaschool.healthchaser.healthpoints.Meditation;
 import com.lambdaschool.healthchaser.healthpoints.Mood;
 import com.lambdaschool.healthchaser.healthpoints.Restroom;
 import com.lambdaschool.healthchaser.healthpoints.Sleep;
+import com.lambdaschool.healthchaser.healthpoints.Water;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,15 +71,15 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 textViewHeading.setText(R.string.menu_sleep);
                 break;
             case MEALS:
-                object = new Sleep();
-                trackingNodeName = "Meals";
+                object = new Meals();
+                trackingNodeName = "meals";
                 viewFlipperDisplayChild = 1;
                 maxDataToCollect = 4;
                 currentDataCollected = 0;
                 textViewHeading.setText(R.string.menu_meals);
                 break;
             case MOOD:
-                object = new Sleep();
+                object = new Mood();
                 trackingNodeName = "mood";
                 viewFlipperDisplayChild = 2;
                 maxDataToCollect = 2;
@@ -86,7 +87,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 textViewHeading.setText(R.string.menu_mood);
                 break;
             case WATER:
-                object = new Sleep();
+                object = new Water();
                 trackingNodeName = "water";
                 viewFlipperDisplayChild = 3;
                 maxDataToCollect = 2;
@@ -94,7 +95,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 textViewHeading.setText(R.string.menu_water);
                 break;
             case EXERCISE:
-                object = new Sleep();
+                object = new Exercise();
                 trackingNodeName = "exercise";
                 viewFlipperDisplayChild = 4;
                 maxDataToCollect = 4;
@@ -102,7 +103,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 textViewHeading.setText(R.string.menu_exercise);
                 break;
             case RESTROOM:
-                object = new Sleep();
+                object = new Restroom();
                 trackingNodeName = "restroom";
                 viewFlipperDisplayChild = 5;
                 maxDataToCollect = 4;
@@ -110,7 +111,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 textViewHeading.setText(R.string.menu_restroom);
                 break;
             case HYGIENE:
-                object = new Sleep();
+                object = new Hygiene();
                 trackingNodeName = "hygiene";
                 viewFlipperDisplayChild = 6;
                 maxDataToCollect = 4;
@@ -118,7 +119,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 textViewHeading.setText(R.string.menu_hygiene);
                 break;
             case MEDITATION:
-                object = new Sleep();
+                object = new Meditation();
                 trackingNodeName = "meditation";
                 viewFlipperDisplayChild = 7;
                 maxDataToCollect = 4;
@@ -219,7 +220,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             }
             case "exercise_time": {
                 long timeInMillis = calendar.getTimeInMillis();
-                ((Sleep) object).setAwakeTime(timeInMillis);
+                ((Exercise) object).setExerciseTime(timeInMillis);
                 textViewById = findViewById(R.id.exercise_text_view_time);
                 textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you exercised at %d:%02d. ",
                         calendar.get(Calendar.MONTH),
@@ -231,7 +232,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             }
             case "restroom_time": {
                 long timeInMillis = calendar.getTimeInMillis();
-                ((Sleep) object).setAwakeTime(timeInMillis);
+                ((Restroom) object).setRestroomTime(timeInMillis);
                 textViewById = findViewById(R.id.restroom_text_view_time);
                 textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you restroomed at %d:%02d. ",
                         calendar.get(Calendar.MONTH),
@@ -243,7 +244,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             }
             case "hygiene_time": {
                 long timeInMillis = calendar.getTimeInMillis();
-                ((Sleep) object).setAwakeTime(timeInMillis);
+                ((Hygiene) object).setHygieneTime(timeInMillis);
                 textViewById = findViewById(R.id.hygiene_text_view_time);
                 textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you bathed at %d:%02d. ",
                         calendar.get(Calendar.MONTH),
@@ -255,7 +256,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             }
             case "meditation_time": {
                 long timeInMillis = calendar.getTimeInMillis();
-                ((Sleep) object).setAwakeTime(timeInMillis);
+                ((Meditation) object).setMeditationTime(timeInMillis);
                 textViewById = findViewById(R.id.meditation_text_view_time);
                 textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you meditated at %d:%02d. ",
                         calendar.get(Calendar.MONTH),
@@ -480,7 +481,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 ((Meditation) object).setMeditationType(seekBarSelection);
                 translation = Meditation.meditationTypes.get(seekBarSelection);
                 textViewById = findViewById(R.id.meditation_text_view_type);
-                textToAppend = "You meditated with " + translation + ". ";
+                textToAppend = "You meditated using " + translation + ". ";
                 break;
             }
             case "meditation_after_feeling": {

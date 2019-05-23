@@ -1,6 +1,9 @@
 package com.lambdaschool.healthchaser.healthpoints;
 
+import android.support.annotation.NonNull;
+
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Mood {
@@ -67,4 +70,10 @@ public class Mood {
         return translation;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(), "Your mood is %s and the reason for that is because of your %s.",
+                translateMoodType(), translateMoodReasons());
+    }
 }

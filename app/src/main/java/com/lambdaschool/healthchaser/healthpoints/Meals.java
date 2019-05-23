@@ -1,6 +1,9 @@
 package com.lambdaschool.healthchaser.healthpoints;
 
+import android.support.annotation.NonNull;
+
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Meals {
@@ -101,5 +104,12 @@ public class Meals {
             translation = "indeterminate";
 
         return translation;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(), "Your food quality was %s and you ate %d portions. Those choice made you %s and you felt %s.",
+                translateFoodQuality(), this.foodAmount, translateHungryOverate(), translateAfterFeeling());
     }
 }

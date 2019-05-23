@@ -1,12 +1,16 @@
 package com.lambdaschool.healthchaser.healthpoints;
 
+import android.support.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Meditation {
 
     private long meditationTime;
-    private int meditationType,meditationDuration, afterFeeling;
+    private int meditationType, meditationDuration, afterFeeling;
 
     public static final Map<Integer, String> meditationTypes = new HashMap<Integer, String>() {
         {
@@ -41,6 +45,18 @@ public class Meditation {
 
     public void setMeditationTime(long meditationTime) {
         this.meditationTime = meditationTime;
+    }
+
+    public String translateMeditationTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+        return simpleDateFormat.format(this.meditationTime);
+    }
+
+    public String translateMeditationDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+
+        return simpleDateFormat.format(this.meditationTime);
     }
 
     public int getMeditationType() {
@@ -83,5 +99,12 @@ public class Meditation {
             translation = "indeterminate";
 
         return translation;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(), "On %s at %s you used %s to meditate for approximately %d minutes. It left you feeling %s.",
+                translateMeditationDate(), translateMeditationTime(), translateMeditationType(), this.meditationDuration, translateAfterFeeling());
     }
 }

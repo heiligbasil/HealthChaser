@@ -1,12 +1,16 @@
 package com.lambdaschool.healthchaser.healthpoints;
 
+import android.support.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Hygiene {
 
     private long hygieneTime;
-    private int hygieneType,hygieneDuration,hygieneTemperature;
+    private int hygieneType, hygieneDuration, hygieneTemperature;
 
     public static final Map<Integer, String> hygieneTypes = new HashMap<Integer, String>() {
         {
@@ -40,6 +44,18 @@ public class Hygiene {
 
     public void setHygieneTime(long hygieneTime) {
         this.hygieneTime = hygieneTime;
+    }
+
+    public String translateHygieneTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+        return simpleDateFormat.format(this.hygieneTime);
+    }
+
+    public String translateHygieneDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+
+        return simpleDateFormat.format(this.hygieneTime);
     }
 
     public int getHygieneType() {
@@ -84,5 +100,10 @@ public class Hygiene {
         return translation;
     }
 
-
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(), "On %s at %s your hygiene of choice was %s with a temperature of %s which lasted %d minutes.",
+                translateHygieneDate(), translateHygieneTime(), translateHygieneType(), translateHygieneTemperature(), this.hygieneDuration);
+    }
 }

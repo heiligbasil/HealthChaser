@@ -1,12 +1,16 @@
 package com.lambdaschool.healthchaser.healthpoints;
 
+import android.support.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Exercise {
 
     private long exerciseTime;
-    private int exerciseType,exerciseDuration,afterFeeling;
+    private int exerciseType, exerciseDuration, afterFeeling;
 
     public static final Map<Integer, String> exerciseTypes = new HashMap<Integer, String>() {
         {
@@ -40,6 +44,18 @@ public class Exercise {
 
     public void setExerciseTime(long exerciseTime) {
         this.exerciseTime = exerciseTime;
+    }
+
+    public String translateExerciseTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+        return simpleDateFormat.format(this.exerciseTime);
+    }
+
+    public String translateExerciseDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+
+        return simpleDateFormat.format(this.exerciseTime);
     }
 
     public int getExerciseType() {
@@ -82,5 +98,12 @@ public class Exercise {
             translation = "indeterminate";
 
         return translation;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(), "You exercised by %s for %d minutes on %s at %s. Afterwards you felt %s.",
+                translateExerciseType(), this.exerciseDuration, translateExerciseDate(), translateExerciseTime(), translateAfterFeeling());
     }
 }

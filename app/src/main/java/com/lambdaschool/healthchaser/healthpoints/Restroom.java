@@ -1,12 +1,16 @@
 package com.lambdaschool.healthchaser.healthpoints;
 
+import android.support.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Restroom {
 
     private long restroomTime;
-    private int restroomType,restroomDuration,restroomAmount;
+    private int restroomType, restroomDuration, restroomAmount;
 
     public static final Map<Integer, String> restroomTypes = new HashMap<Integer, String>() {
         {
@@ -30,6 +34,19 @@ public class Restroom {
     public void setRestroomTime(long restroomTime) {
         this.restroomTime = restroomTime;
     }
+
+    public String translateRestroomTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+        return simpleDateFormat.format(this.restroomTime);
+    }
+
+    public String translateRestroomDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+
+        return simpleDateFormat.format(this.restroomTime);
+    }
+
 
     public int getRestroomType() {
         return restroomType;
@@ -64,4 +81,10 @@ public class Restroom {
         this.restroomAmount = restroomAmount;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(), "On %s at %s you had %d restroom visits lasting an average of %d minutes which broadly could be described as %s.",
+                translateRestroomDate(), translateRestroomTime(), this.restroomAmount, this.restroomDuration, translateRestroomType());
+    }
 }
