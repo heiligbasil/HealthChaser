@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -20,6 +21,7 @@ import com.lambdaschool.healthchaser.healthpoints.Sleep;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static com.lambdaschool.healthchaser.MainActivity.Tracking;
 
@@ -29,9 +31,13 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     ArrayList<String> stringArrayList = new ArrayList<>();
     private Tracking trackingType;
     private GenericMasterActivityAdapter genericMasterActivityAdapter;
-    private ArrayList<Object> objectArrayList;
+    //private ArrayList<Object> objectArrayList;
     static String viewToUpdateTime;
+    int maxDataToCollect;
+    int currentDataCollected;
     Sleep sleep;
+    private ImageButton pickerButton;
+    private Button buttonSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +47,49 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         Intent intent = getIntent();
         trackingType = (Tracking) intent.getSerializableExtra("tracking");
 
-        objectArrayList = new ArrayList<>();
-        sleep=new Sleep();
-        String trackingNodeName = "";
-        int viewFlipperDisplayChild = 0;
+        //objectArrayList = new ArrayList<>();
+        sleep = new Sleep();
+        String trackingNodeName;
+        int viewFlipperDisplayChild;
 
         switch (trackingType) {
             case SLEEP:
                 trackingNodeName = "sleep";
                 viewFlipperDisplayChild = 0;
+                maxDataToCollect = 4;
+                currentDataCollected = 0;
                 break;
             case MEALS:
+                trackingNodeName = "";
+                viewFlipperDisplayChild = 0;
                 break;
             case MOOD:
+                trackingNodeName = "";
+                viewFlipperDisplayChild = 0;
                 break;
             case WATER:
+                trackingNodeName = "";
+                viewFlipperDisplayChild = 0;
                 break;
             case EXERCISE:
+                trackingNodeName = "";
+                viewFlipperDisplayChild = 0;
                 break;
             case RESTROOM:
+                trackingNodeName = "";
+                viewFlipperDisplayChild = 0;
                 break;
             case HYGIENE:
+                trackingNodeName = "";
+                viewFlipperDisplayChild = 0;
                 break;
             case MEDITATION:
+                trackingNodeName = "";
+                viewFlipperDisplayChild = 0;
+                break;
+            default:
+                trackingNodeName = "";
+                viewFlipperDisplayChild = 0;
                 break;
         }
 
@@ -140,7 +166,9 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         viewFlipper.setDisplayedChild(viewFlipperDisplayChild);
 
 
-        ((Button) findViewById(R.id.generic_button_save)).setOnClickListener(new View.OnClickListener() {
+        buttonSave = findViewById(R.id.generic_button_save);
+        buttonSave.setEnabled(false);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -150,28 +178,53 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     }
 
     public void showTimePickerDialog(View v) {
+        pickerButton = (ImageButton) v;
+        viewToUpdateTime = (String) pickerButton.getTag();
+
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.setCancelable(false);
-        viewToUpdateTime = (String) v.getTag();
         newFragment.show(getSupportFragmentManager(), "timePicker");
-
-        /*if (v.getTag().toString().equals("bed_time")) {
-            ((TextView)findViewById(R.id.sleep_text_view_sleep_time)).append(timeFromPickerDialog);
-        }*/
     }
 
     @Override
-    public void onComplete(String time) {
-        String[] tc = time.split(":");
-        ((TextView) findViewById(R.id.sleep_text_view_sleep_time)).append(time);
+    public void onComplete(int hourOfDay, int minute) {
+
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -1);
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(tc[0]));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(tc[1]));
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        long timeInMillis = calendar.getTimeInMillis();
-        Sleep sleep=new Sleep();
-        sleep.setSleepTime(timeInMillis);
-        objectArrayList.add(sleep);
+
+        TextView textViewById;
+
+        switch (viewToUpdateTime) {
+            case "sleep_time": {
+                calendar.add(Calendar.DATE, -1);
+                long timeInMillis = calendar.getTimeInMillis();
+                sleep.setSleepTime(timeInMillis);
+                textViewById = findViewById(R.id.sleep_text_view_sleep_time);
+                break;
+            }
+            case "awake_time": {
+                long timeInMillis = calendar.getTimeInMillis();
+                sleep.setAwakeTime(timeInMillis);
+                textViewById = findViewById(R.id.sleep_text_view_awake_time);
+                break;
+            }
+            default: {
+                textViewById = findViewById(R.id.generic_text_view_heading);
+                break;
+            }
+        }
+
+        textViewById.append(String.format(Locale.getDefault(), " %d:%02d", hourOfDay, minute));
+        textViewById.setBackgroundColor(Color.YELLOW);
+
+        pickerButton.setEnabled(false);
+        pickerButton.setImageResource(R.color.colorGray);
+        currentDataCollected++;
+
+        if (currentDataCollected == maxDataToCollect) {
+            buttonSave.setEnabled(true);
+        }
     }
 }

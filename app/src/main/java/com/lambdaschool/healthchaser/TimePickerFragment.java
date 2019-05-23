@@ -3,6 +3,7 @@ package com.lambdaschool.healthchaser;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
@@ -15,7 +16,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current time as the default values for the picker
+
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
@@ -25,11 +26,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        // Do something with the time chosen by the user
-
-        String time = String.format(Locale.getDefault(), "%d:%d", hourOfDay, minute);
-
-        this.onCompleteListener.onComplete(time);
+        this.onCompleteListener.onComplete(hourOfDay,  minute);
     }
 
     /**
@@ -37,21 +34,21 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
      * @see  <a href="https://stackoverflow.com/questions/15121373/returning-string-from-dialog-fragment-back-to-activity/15121529#15121529">Stack Overflow</a>
      */
     public interface OnCompleteListener {
-        void onComplete(String time);
+        void onComplete(int hourOfDay, int minute);
     }
 
     private OnCompleteListener onCompleteListener;
 
-    // make sure the Activity implemented it
+    // Make sure the Context implemented it
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Context context) {
 
-        super.onAttach(activity);
+        super.onAttach(context);
 
         try {
-            this.onCompleteListener = (OnCompleteListener) activity;
+            this.onCompleteListener = (OnCompleteListener) context;
         } catch (final ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
+            throw new ClassCastException(context.toString() + " must implement OnCompleteListener");
         }
     }
 }

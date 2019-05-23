@@ -37,8 +37,8 @@ class FirebaseDao {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                /*GenericTypeIndicator<ArrayList<Sleep>> ids = new GenericTypeIndicator<ArrayList<Sleep>>() {};
-                ArrayList<Sleep> sleepArrayList=dataSnapshot.getValue(ids);*/
+                /*GenericTypeIndicator<List<Sleep>> ids = new GenericTypeIndicator<List<Sleep>>() {};
+                List<Sleep> sleepArrayList=dataSnapshot.getValue(ids);*/
                 Iterable<DataSnapshot> childrenNodes = dataSnapshot.getChildren();
                 for (DataSnapshot ds : childrenNodes) {
                     switch (trackingType) {
