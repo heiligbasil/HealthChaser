@@ -60,6 +60,10 @@
         android:background="@android:drawable/editbox_background"
         android:lines="2"
         android:maxLines="2"
+        android:autoSizeMaxTextSize="20dp"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
         android:text=""
         android:textAlignment="center" />
 

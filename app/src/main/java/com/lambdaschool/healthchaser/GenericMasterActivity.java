@@ -33,7 +33,6 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     ArrayList<String> stringArrayList = new ArrayList<>();
     private Tracking trackingType;
     private GenericMasterActivityAdapter genericMasterActivityAdapter;
-    //private ArrayList<Object> objectArrayList;
     static String viewToUpdateTime;
     int maxDataToCollect;
     int currentDataCollected;
@@ -199,22 +198,38 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
         TextView textViewById;
 
+        String textToAppend;
+
+
         switch (viewToUpdateTime) {
             case "sleep_time": {
                 calendar.add(Calendar.DATE, -1);
                 long timeInMillis = calendar.getTimeInMillis();
                 sleep.setSleepTime(timeInMillis);
                 textViewById = findViewById(R.id.sleep_text_view_sleep_time);
+                textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you slept at %d:%02d. ",
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE));
                 break;
             }
             case "awake_time": {
                 long timeInMillis = calendar.getTimeInMillis();
                 sleep.setAwakeTime(timeInMillis);
                 textViewById = findViewById(R.id.sleep_text_view_awake_time);
+                textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you awoke at %d:%02d. ",
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE));
                 break;
             }
             default: {
                 textViewById = findViewById(R.id.generic_text_view_heading);
+                textToAppend = "An unexpected occurrence. ";
                 break;
             }
         }
@@ -229,6 +244,8 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         if (currentDataCollected == maxDataToCollect) {
             buttonSave.setEnabled(true);
         }
+
+        appendToSelections(textToAppend);
     }
 
     public void showSeekBarDialog(View v) {
@@ -276,23 +293,28 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         if (translation == null)
             translation = "indeterminate";
 
+        String textToAppend;
+
         switch (viewToUpdateTime) {
             case "sleep_quality": {
                 sleep.setQuality(seekBarSelection);
                 translation = Sleep.qualities.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_sleep_quality);
+                textToAppend = "Quality of sleep was " + translation + ". ";
                 break;
             }
             case "awake_feeling": {
                 sleep.setFeeling(seekBarSelection);
                 translation = Sleep.feelings.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_awake_feeling);
+                textToAppend = "You awoke feeling " + translation + ". ";
                 break;
             }
             default: {
                 sleep.setQuality(seekBarSelection);
                 translation = Sleep.qualities.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_sleep_quality);
+                textToAppend = "Quality of sleep was " + translation + ". ";
                 break;
             }
         }
@@ -307,5 +329,11 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         if (currentDataCollected == maxDataToCollect) {
             buttonSave.setEnabled(true);
         }
+
+        appendToSelections(textToAppend);
+    }
+
+    private void appendToSelections(String textToAppend) {
+        ((TextView) findViewById(R.id.generic_text_view_results)).append(" " + textToAppend);
     }
 }
