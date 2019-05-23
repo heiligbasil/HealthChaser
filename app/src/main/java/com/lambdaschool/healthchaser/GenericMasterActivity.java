@@ -2,7 +2,6 @@ package com.lambdaschool.healthchaser;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,28 +16,29 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lambdaschool.healthchaser.healthpoints.Sleep;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import static com.lambdaschool.healthchaser.MainActivity.Tracking;
+import static com.lambdaschool.healthchaser.MainActivity.currentLoggedInUser;
 
 public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener, SeekBarFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "GenericMasterActivity";
-    ArrayList<String> stringArrayList = new ArrayList<>();
     private Tracking trackingType;
     private GenericMasterActivityAdapter genericMasterActivityAdapter;
     static String viewToUpdateTime;
-    int maxDataToCollect;
-    int currentDataCollected;
-    Sleep sleep;
+    private Object object;
     private ImageButton pickerButton;
     private Button buttonSave;
+    int maxDataToCollect;
+    int currentDataCollected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +47,12 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
         Intent intent = getIntent();
         trackingType = (Tracking) intent.getSerializableExtra("tracking");
-
-        //objectArrayList = new ArrayList<>();
-        sleep = new Sleep();
-        String trackingNodeName;
+        final String trackingNodeName;
         int viewFlipperDisplayChild;
 
         switch (trackingType) {
             case SLEEP:
+                object = new Sleep();
                 trackingNodeName = "sleep";
                 viewFlipperDisplayChild = 0;
                 maxDataToCollect = 4;
@@ -94,9 +92,6 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 break;
         }
 
-        //stringArrayList=FirebaseDao.getAllEntriesForSpecifiedTrackingCategory(trackingNodeName,trackingType);
-
-
         final RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -111,70 +106,23 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             }
         });
 
-
-
-
-
-
-
-      /*  String path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
-        DatabaseReference firebaseReference = FirebaseDatabase.getInstance().getReference(path);
-
-
-//        Sleep sleep = new Sleep(1558496476412L, 1558497702951L, 0, 3);
-//        firebaseReference.child(String.valueOf(System.currentTimeMillis())).setValue(sleep);
-
-        firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Iterable<DataSnapshot> childrenNodes = dataSnapshot.getChildren();
-                for (DataSnapshot ds : childrenNodes) {
-                    switch (trackingType) {
-                        case SLEEP:
-                            Sleep sleep = ds.getValue(Sleep.class);
-                            stringArrayList.add(sleep.toString());
-                            break;
-                        case MEALS:
-                            break;
-                        case MOOD:
-                            break;
-                        case WATER:
-                            break;
-                        case EXERCISE:
-                            break;
-                        case RESTROOM:
-                            break;
-                        case HYGIENE:
-                            break;
-                        case MEDITATION:
-                            break;
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e(TAG, "Failed to read value.", error.toException());
-            }
-        });*/
-
-
         ViewFlipper viewFlipper = findViewById(R.id.view_flipper);
         viewFlipper.setDisplayedChild(viewFlipperDisplayChild);
 
 
-        buttonSave =
-
-                findViewById(R.id.generic_button_save);
+        buttonSave = findViewById(R.id.generic_button_save);
         buttonSave.setEnabled(false);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                String path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
+                DatabaseReference firebaseReference = FirebaseDatabase.getInstance().getReference(path);
+                firebaseReference.child(String.valueOf(System.currentTimeMillis())).setValue(object);
+
                 genericMasterActivityAdapter.notifyDataSetChanged();
+
+                v.setEnabled(false);
             }
         });
     }
@@ -205,7 +153,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             case "sleep_time": {
                 calendar.add(Calendar.DATE, -1);
                 long timeInMillis = calendar.getTimeInMillis();
-                sleep.setSleepTime(timeInMillis);
+                ((Sleep) object).setSleepTime(timeInMillis);
                 textViewById = findViewById(R.id.sleep_text_view_sleep_time);
                 textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you slept at %d:%02d. ",
                         calendar.get(Calendar.MONTH),
@@ -217,7 +165,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
             }
             case "awake_time": {
                 long timeInMillis = calendar.getTimeInMillis();
-                sleep.setAwakeTime(timeInMillis);
+                ((Sleep) object).setAwakeTime(timeInMillis);
                 textViewById = findViewById(R.id.sleep_text_view_awake_time);
                 textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you awoke at %d:%02d. ",
                         calendar.get(Calendar.MONTH),
@@ -297,21 +245,21 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
         switch (viewToUpdateTime) {
             case "sleep_quality": {
-                sleep.setQuality(seekBarSelection);
+                ((Sleep) object).setQuality(seekBarSelection);
                 translation = Sleep.qualities.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_sleep_quality);
                 textToAppend = "Quality of sleep was " + translation + ". ";
                 break;
             }
             case "awake_feeling": {
-                sleep.setFeeling(seekBarSelection);
+                ((Sleep) object).setFeeling(seekBarSelection);
                 translation = Sleep.feelings.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_awake_feeling);
                 textToAppend = "You awoke feeling " + translation + ". ";
                 break;
             }
             default: {
-                sleep.setQuality(seekBarSelection);
+                ((Sleep) object).setQuality(seekBarSelection);
                 translation = Sleep.qualities.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_sleep_quality);
                 textToAppend = "Quality of sleep was " + translation + ". ";
