@@ -6,14 +6,14 @@ import java.util.Map;
 public class Meditation {
 
     private long meditationTime;
-    private int meditationType,meditationDuration,meditationFeeling;
+    private int meditationType,meditationDuration, afterFeeling;
 
     public static final Map<Integer, String> meditationTypes = new HashMap<Integer, String>() {
         {
             put(-3, "mantra");
             put(-2, "images");
             put(-1, "nature");
-            put(0, "still");
+            put(0, "stillness");
             put(1, "thoughts");
             put(2, "breath");
             put(3, "body");
@@ -68,16 +68,16 @@ public class Meditation {
         this.meditationDuration = meditationDuration;
     }
 
-    public int getMeditationFeeling() {
-        return meditationFeeling;
+    public int getAfterFeeling() {
+        return afterFeeling;
     }
 
-    public void setMeditationFeeling(int meditationFeeling) {
-        this.meditationFeeling = meditationFeeling;
+    public void setAfterFeeling(int afterFeeling) {
+        this.afterFeeling = afterFeeling;
     }
 
     public String translateAfterFeeling() {
-        String translation = afterFeelings.get(this.meditationFeeling);
+        String translation = afterFeelings.get(this.afterFeeling);
 
         if (translation == null)
             translation = "indeterminate";

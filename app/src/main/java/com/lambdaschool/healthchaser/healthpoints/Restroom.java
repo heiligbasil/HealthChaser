@@ -16,7 +16,7 @@ public class Restroom {
             put(0, "normal");
             put(1, "heavy");
             put(2, "hard");
-            put(3, "constipation");
+            put(3, "constipated");
         }
     };
 

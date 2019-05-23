@@ -18,6 +18,12 @@ import android.widget.ViewFlipper;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.lambdaschool.healthchaser.healthpoints.Exercise;
+import com.lambdaschool.healthchaser.healthpoints.Hygiene;
+import com.lambdaschool.healthchaser.healthpoints.Meals;
+import com.lambdaschool.healthchaser.healthpoints.Meditation;
+import com.lambdaschool.healthchaser.healthpoints.Mood;
+import com.lambdaschool.healthchaser.healthpoints.Restroom;
 import com.lambdaschool.healthchaser.healthpoints.Sleep;
 
 import java.util.ArrayList;
@@ -297,6 +303,66 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 textToDisplayPrefix = "Awake feeling: ";
                 break;
             }
+            case "food_quality": {
+                mapOfDescriptions.putAll(Meals.foodQualities);
+                textToDisplayPrefix = "Food quality: ";
+                break;
+            }
+            case "hungry_overate": {
+                mapOfDescriptions.putAll(Meals.hungryOverateChoices);
+                textToDisplayPrefix = "Hungry/overate: ";
+                break;
+            }
+            case "meals_after_feeling": {
+                mapOfDescriptions.putAll(Meals.afterFeelings);
+                textToDisplayPrefix = "After meals feeling: ";
+                break;
+            }
+            case "mood_type": {
+                mapOfDescriptions.putAll(Mood.moodTypes);
+                textToDisplayPrefix = "Mood type: ";
+                break;
+            }
+            case "mood_reason": {
+                mapOfDescriptions.putAll(Mood.moodReasons);
+                textToDisplayPrefix = "Mood reason: ";
+                break;
+            }
+            case "exercise_type": {
+                mapOfDescriptions.putAll(Exercise.exerciseTypes);
+                textToDisplayPrefix = "Exercise type: ";
+                break;
+            }
+            case "exercise_after_feeling": {
+                mapOfDescriptions.putAll(Exercise.afterFeelings);
+                textToDisplayPrefix = "After exercise feeling: ";
+                break;
+            }
+            case "restroom_type": {
+                mapOfDescriptions.putAll(Restroom.restroomTypes);
+                textToDisplayPrefix = "Restroom type: ";
+                break;
+            }
+            case "hygiene_type": {
+                mapOfDescriptions.putAll(Hygiene.hygieneTypes);
+                textToDisplayPrefix = "Hygiene type: ";
+                break;
+            }
+            case "hygiene_temperature": {
+                mapOfDescriptions.putAll(Hygiene.hygieneTemperatures);
+                textToDisplayPrefix = "Hygiene temperature: ";
+                break;
+            }
+            case "meditation_type": {
+                mapOfDescriptions.putAll(Meditation.meditationTypes);
+                textToDisplayPrefix = "Meditation type: ";
+                break;
+            }
+            case "meditation_after_feeling": {
+                mapOfDescriptions.putAll(Meditation.afterFeelings);
+                textToDisplayPrefix = "After meditation feeling: ";
+                break;
+            }
             default: {
                 mapOfDescriptions.put(0, "error");
                 textToDisplayPrefix = "An unexpected occurrence: ";
@@ -338,6 +404,90 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 translation = Sleep.awakeFeelings.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_awake_feeling);
                 textToAppend = "You awoke feeling " + translation + ". ";
+                break;
+            }
+            case "food_quality": {
+                ((Meals) object).setFoodQuality(seekBarSelection);
+                translation = Meals.foodQualities.get(seekBarSelection);
+                textViewById = findViewById(R.id.meals_text_view_food_quality);
+                textToAppend = "Your food quality was " + translation + ". ";
+                break;
+            }
+            case "hungry_overate": {
+                ((Meals) object).setHungryOverate(seekBarSelection);
+                translation = Meals.hungryOverateChoices.get(seekBarSelection);
+                textViewById = findViewById(R.id.meals_text_view_hungry_overate);
+                textToAppend = "Your hunger/overeat status was " + translation + ". ";
+                break;
+            }
+            case "meals_after_feeling": {
+                ((Meals) object).setAfterFeeling(seekBarSelection);
+                translation = Meals.afterFeelings.get(seekBarSelection);
+                textViewById = findViewById(R.id.meals_text_view_after_feeling);
+                textToAppend = "Your meal left you feeling " + translation + ". ";
+                break;
+            }
+            case "mood_type": {
+                ((Mood) object).setMoodType(seekBarSelection);
+                translation = Mood.moodTypes.get(seekBarSelection);
+                textViewById = findViewById(R.id.mood_text_view_type);
+                textToAppend = "Your mood is " + translation + ". ";
+                break;
+            }
+            case "mood_reason": {
+                ((Mood) object).setMoodReason(seekBarSelection);
+                translation = Mood.moodReasons.get(seekBarSelection);
+                textViewById = findViewById(R.id.mood_text_view_reason);
+                textToAppend = "The reason for your mood is " + translation + ". ";
+                break;
+            }
+            case "exercise_type": {
+                ((Exercise) object).setExerciseType(seekBarSelection);
+                translation = Exercise.exerciseTypes.get(seekBarSelection);
+                textViewById = findViewById(R.id.exercise_text_view_type);
+                textToAppend = "You did " + translation + ". ";
+                break;
+            }
+            case "exercise_after_feeling": {
+                ((Exercise) object).setAfterFeeling(seekBarSelection);
+                translation = Exercise.afterFeelings.get(seekBarSelection);
+                textViewById = findViewById(R.id.exercise_text_view_after_feeling);
+                textToAppend = "The exercise left you feeling " + translation + ". ";
+                break;
+            }
+            case "restroom_type": {
+                ((Restroom) object).setRestroomType(seekBarSelection);
+                translation = Restroom.restroomTypes.get(seekBarSelection);
+                textViewById = findViewById(R.id.restroom_text_view_type);
+                textToAppend = "Your restroom visit was " + translation + ". ";
+                break;
+            }
+            case "hygiene_type": {
+                ((Hygiene) object).setHygieneType(seekBarSelection);
+                translation = Hygiene.hygieneTypes.get(seekBarSelection);
+                textViewById = findViewById(R.id.hygiene_text_view_type);
+                textToAppend = "Your hygiene method " + translation + ". ";
+                break;
+            }
+            case "hygiene_temperature": {
+                ((Hygiene) object).setHygieneTemperature(seekBarSelection);
+                translation = Hygiene.hygieneTemperatures.get(seekBarSelection);
+                textViewById = findViewById(R.id.hygiene_text_view_temperature);
+                textToAppend = "Your hygiene temperature " + translation + ". ";
+                break;
+            }
+            case "meditation_type": {
+                ((Meditation) object).setMeditationType(seekBarSelection);
+                translation = Meditation.meditationTypes.get(seekBarSelection);
+                textViewById = findViewById(R.id.meditation_text_view_type);
+                textToAppend = "You meditated with " + translation + ". ";
+                break;
+            }
+            case "meditation_after_feeling": {
+                ((Meditation) object).setAfterFeeling(seekBarSelection);
+                translation = Meditation.afterFeelings.get(seekBarSelection);
+                textViewById = findViewById(R.id.meditation_text_view_after_feeling);
+                textToAppend = "Meditation left you feeling " + translation + ". ";
                 break;
             }
             default: {

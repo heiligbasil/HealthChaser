@@ -12,17 +12,6 @@ public class Sleep {
     private long sleepTime, awakeTime;
     private int sleepQuality, awakeFeeling;
 
-    public static final Map<Integer, String> awakeFeelings = new HashMap<Integer, String>() {
-        {
-            put(-3, "horrible");
-            put(-2, "bad");
-            put(-1, "unsatisfactory");
-            put(0, "ambivalent");
-            put(1, "good");
-            put(2, "refreshed");
-            put(3, "amazing");
-        }
-    };
     public static final Map<Integer, String> sleepQualities = new HashMap<Integer, String>() {
         {
             put(-3, "agitated");
@@ -32,6 +21,17 @@ public class Sleep {
             put(1, "adequate");
             put(2, "serene");
             put(3, "perfect");
+        }
+    };
+    public static final Map<Integer, String> awakeFeelings = new HashMap<Integer, String>() {
+        {
+            put(-3, "horrible");
+            put(-2, "bad");
+            put(-1, "unsatisfactory");
+            put(0, "ambivalent");
+            put(1, "good");
+            put(2, "refreshed");
+            put(3, "amazing");
         }
     };
 
