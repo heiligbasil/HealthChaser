@@ -3,12 +3,37 @@ package com.lambdaschool.healthchaser.healthpoints;
 import android.support.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class Sleep {
 
     private long sleepTime, awakeTime;
     private int quality, feeling;
+
+    public static final Map<Integer, String> feelings = new HashMap<Integer, String>() {
+        {
+            put(-3, "horrible");
+            put(-2, "bad");
+            put(-1, "unsatisfactory");
+            put(0, "ambivalent");
+            put(1, "good");
+            put(2, "refreshed");
+            put(3, "amazing");
+        }
+    };
+    public static final Map<Integer, String> qualities = new HashMap<Integer, String>() {
+        {
+            put(-3, "agitated");
+            put(-2, "sleepless");
+            put(-1, "unpleasant");
+            put(0, "forgettable");
+            put(1, "adequate");
+            put(2, "serene");
+            put(3, "perfect");
+        }
+    };
 
     public Sleep() {
     }
@@ -63,34 +88,10 @@ public class Sleep {
     }
 
     public String translateQuality() {
-        String translation = "";
+        String translation = qualities.get(this.quality);
 
-        switch (this.quality) {
-            case -3:
-                translation = "agitated";
-                break;
-            case -2:
-                translation = "sleepless";
-                break;
-            case -1:
-                translation = "unpleasant";
-                break;
-            case 0:
-                translation = "forgettable";
-                break;
-            case 1:
-                translation = "adequate";
-                break;
-            case 2:
-                translation = "serene";
-                break;
-            case 3:
-                translation = "perfect";
-                break;
-            default:
-                translation = "indeterminate";
-                break;
-        }
+        if (translation == null)
+            translation = "indeterminate";
 
         return translation;
     }
@@ -104,34 +105,10 @@ public class Sleep {
     }
 
     public String translateFeeling() {
-        String translation = "";
+        String translation = feelings.get(this.feeling);
 
-        switch (this.feeling) {
-            case -3:
-                translation = "horrible";
-                break;
-            case -2:
-                translation = "bad";
-                break;
-            case -1:
-                translation = "unsatisfactory";
-                break;
-            case 0:
-                translation = "ambivalent";
-                break;
-            case 1:
-                translation = "good";
-                break;
-            case 2:
-                translation = "refreshed";
-                break;
-            case 3:
-                translation = "amazing";
-                break;
-            default:
-                translation = "indeterminate";
-                break;
-        }
+        if (translation == null)
+            translation = "indeterminate";
 
         return translation;
     }

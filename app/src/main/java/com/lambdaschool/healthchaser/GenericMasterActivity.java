@@ -21,11 +21,13 @@ import com.lambdaschool.healthchaser.healthpoints.Sleep;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.lambdaschool.healthchaser.MainActivity.Tracking;
 
-public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener {
+public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener, SeekBarFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "GenericMasterActivity";
     ArrayList<String> stringArrayList = new ArrayList<>();
@@ -116,7 +118,6 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
 
 
-
       /*  String path = "users/" + currentLoggedInUser.getUserId() + "/" + trackingNodeName;
         DatabaseReference firebaseReference = FirebaseDatabase.getInstance().getReference(path);
 
@@ -166,7 +167,9 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         viewFlipper.setDisplayedChild(viewFlipperDisplayChild);
 
 
-        buttonSave = findViewById(R.id.generic_button_save);
+        buttonSave =
+
+                findViewById(R.id.generic_button_save);
         buttonSave.setEnabled(false);
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,6 +220,84 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         }
 
         textViewById.append(String.format(Locale.getDefault(), " %d:%02d", hourOfDay, minute));
+        textViewById.setBackgroundColor(Color.YELLOW);
+
+        pickerButton.setEnabled(false);
+        pickerButton.setImageResource(R.color.colorGray);
+        currentDataCollected++;
+
+        if (currentDataCollected == maxDataToCollect) {
+            buttonSave.setEnabled(true);
+        }
+    }
+
+    public void showSeekBarDialog(View v) {
+        pickerButton = (ImageButton) v;
+        viewToUpdateTime = (String) pickerButton.getTag();
+
+        HashMap<Integer, String> mapOfDescriptions = new HashMap<>();
+        String textToDisplayPrefix;
+
+        switch (viewToUpdateTime) {
+            case "sleep_quality": {
+                mapOfDescriptions.putAll(Sleep.qualities);
+                textToDisplayPrefix = "Sleep quality: ";
+                break;
+            }
+            case "awake_feeling": {
+                mapOfDescriptions.putAll(Sleep.feelings);
+                textToDisplayPrefix = "Awake feeling: ";
+                break;
+            }
+            default: {
+                mapOfDescriptions.putAll(Sleep.qualities);
+                textToDisplayPrefix = "Sleep quality: ";
+                break;
+            }
+        }
+
+        SeekBarFragment seekBarFragment = new SeekBarFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(SeekBarFragment.ARG_PARAM1, mapOfDescriptions);
+        bundle.putString(SeekBarFragment.ARG_PARAM2, textToDisplayPrefix);
+        seekBarFragment.setArguments(bundle);
+
+        seekBarFragment.setStyle(DialogFragment.STYLE_NORMAL, 0);
+        seekBarFragment.show(getSupportFragmentManager(), SeekBarFragment.ARG_PARAM1);
+    }
+
+    @Override
+    public void onFragmentInteraction(int seekBarSelection) {
+
+        TextView textViewById;
+
+        String translation = Sleep.qualities.get(seekBarSelection);
+
+        if (translation == null)
+            translation = "indeterminate";
+
+        switch (viewToUpdateTime) {
+            case "sleep_quality": {
+                sleep.setQuality(seekBarSelection);
+                translation = Sleep.qualities.get(seekBarSelection);
+                textViewById = findViewById(R.id.sleep_text_view_sleep_quality);
+                break;
+            }
+            case "awake_feeling": {
+                sleep.setFeeling(seekBarSelection);
+                translation = Sleep.feelings.get(seekBarSelection);
+                textViewById = findViewById(R.id.sleep_text_view_awake_feeling);
+                break;
+            }
+            default: {
+                sleep.setQuality(seekBarSelection);
+                translation = Sleep.qualities.get(seekBarSelection);
+                textViewById = findViewById(R.id.sleep_text_view_sleep_quality);
+                break;
+            }
+        }
+
+        textViewById.append(" " + translation);
         textViewById.setBackgroundColor(Color.YELLOW);
 
         pickerButton.setEnabled(false);

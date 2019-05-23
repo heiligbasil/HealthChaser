@@ -39,7 +39,6 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     private OnCompleteListener onCompleteListener;
 
-    // Make sure the Context implemented it
     @Override
     public void onAttach(Context context) {
 
