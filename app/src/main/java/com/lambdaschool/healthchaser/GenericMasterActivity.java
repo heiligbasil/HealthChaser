@@ -16,7 +16,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.lambdaschool.healthchaser.healthpoints.Sleep;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.lambdaschool.healthchaser.MainActivity.Tracking;
 
@@ -26,8 +29,9 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     ArrayList<String> stringArrayList = new ArrayList<>();
     private Tracking trackingType;
     private GenericMasterActivityAdapter genericMasterActivityAdapter;
-    static String timeFromPickerDialog;
+    private ArrayList<Object> objectArrayList;
     static String viewToUpdateTime;
+    Sleep sleep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,8 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         Intent intent = getIntent();
         trackingType = (Tracking) intent.getSerializableExtra("tracking");
 
+        objectArrayList = new ArrayList<>();
+        sleep=new Sleep();
         String trackingNodeName = "";
         int viewFlipperDisplayChild = 0;
 
@@ -137,6 +143,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         ((Button) findViewById(R.id.generic_button_save)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 genericMasterActivityAdapter.notifyDataSetChanged();
             }
         });
@@ -145,7 +152,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.setCancelable(false);
-        viewToUpdateTime= (String) v.getTag();
+        viewToUpdateTime = (String) v.getTag();
         newFragment.show(getSupportFragmentManager(), "timePicker");
 
         /*if (v.getTag().toString().equals("bed_time")) {
@@ -155,6 +162,16 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
     @Override
     public void onComplete(String time) {
-        ((TextView)findViewById(R.id.sleep_text_view_sleep_time)).append(time);
+        String[] tc = time.split(":");
+        ((TextView) findViewById(R.id.sleep_text_view_sleep_time)).append(time);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(tc[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(tc[1]));
+        calendar.set(Calendar.SECOND, 0);
+        long timeInMillis = calendar.getTimeInMillis();
+        Sleep sleep=new Sleep();
+        sleep.setSleepTime(timeInMillis);
+        objectArrayList.add(sleep);
     }
 }
