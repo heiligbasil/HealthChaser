@@ -10,9 +10,9 @@ import java.util.Map;
 public class Sleep {
 
     private long sleepTime, awakeTime;
-    private int quality, feeling;
+    private int sleepQuality, awakeFeeling;
 
-    public static final Map<Integer, String> feelings = new HashMap<Integer, String>() {
+    public static final Map<Integer, String> awakeFeelings = new HashMap<Integer, String>() {
         {
             put(-3, "horrible");
             put(-2, "bad");
@@ -23,7 +23,7 @@ public class Sleep {
             put(3, "amazing");
         }
     };
-    public static final Map<Integer, String> qualities = new HashMap<Integer, String>() {
+    public static final Map<Integer, String> sleepQualities = new HashMap<Integer, String>() {
         {
             put(-3, "agitated");
             put(-2, "sleepless");
@@ -38,11 +38,11 @@ public class Sleep {
     public Sleep() {
     }
 
-    public Sleep(long sleepTime, long awakeTime, int quality, int feeling) {
+    public Sleep(long sleepTime, long awakeTime, int sleepQuality, int awakeFeeling) {
         this.sleepTime = sleepTime;
         this.awakeTime = awakeTime;
-        this.quality = quality;
-        this.feeling = feeling;
+        this.sleepQuality = sleepQuality;
+        this.awakeFeeling = awakeFeeling;
     }
 
     public long getSleepTime() {
@@ -79,16 +79,16 @@ public class Sleep {
         return simpleDateFormat.format(this.awakeTime);
     }
 
-    public int getQuality() {
-        return quality;
+    public int getSleepQuality() {
+        return sleepQuality;
     }
 
-    public void setQuality(int quality) {
-        this.quality = quality;
+    public void setSleepQuality(int sleepQuality) {
+        this.sleepQuality = sleepQuality;
     }
 
-    public String translateQuality() {
-        String translation = qualities.get(this.quality);
+    public String translateSleepQuality() {
+        String translation = sleepQualities.get(this.sleepQuality);
 
         if (translation == null)
             translation = "indeterminate";
@@ -96,16 +96,16 @@ public class Sleep {
         return translation;
     }
 
-    public int getFeeling() {
-        return feeling;
+    public int getAwakeFeeling() {
+        return awakeFeeling;
     }
 
-    public void setFeeling(int feeling) {
-        this.feeling = feeling;
+    public void setAwakeFeeling(int awakeFeeling) {
+        this.awakeFeeling = awakeFeeling;
     }
 
-    public String translateFeeling() {
-        String translation = feelings.get(this.feeling);
+    public String translateAwakeFeeling() {
+        String translation = awakeFeelings.get(this.awakeFeeling);
 
         if (translation == null)
             translation = "indeterminate";
@@ -117,6 +117,6 @@ public class Sleep {
     @Override
     public String toString() {
         return String.format(Locale.getDefault(), "On %s you slept at %s and awoke at %s. Your quality of sleep was %s and you felt %s.",
-                translateSleepDate(), translateSleepTime(), translateAwakeTime(), translateQuality(), translateFeeling());
+                translateSleepDate(), translateSleepTime(), translateAwakeTime(), translateSleepQuality(), translateAwakeFeeling());
     }
 }

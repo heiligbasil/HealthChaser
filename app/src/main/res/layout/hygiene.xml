@@ -7,27 +7,27 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/hygiene_text_view_time_of_day"
+        android:id="@+id/hygiene_text_view_time"
         android:layout_width="193dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Time of day:"
+        android:text="Hygiene time:"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/hygiene_image_button_time_of_day"
+        android:id="@+id/hygiene_image_button_hygiene_time"
         android:layout_width="193dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="showTimePickerDialog"
-        android:tag="hygiene_time_of_day"
+        android:tag="hygiene_time"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hygiene_text_view_time_of_day"
+        app:layout_constraintTop_toBottomOf="@+id/hygiene_text_view_time"
         app:srcCompat="@android:color/holo_orange_light" />
 
     <TextView
@@ -41,7 +41,7 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/hygiene_text_view_time_of_day"
+        app:layout_constraintStart_toEndOf="@+id/hygiene_text_view_time"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -52,11 +52,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="showTimePickerDialog"
-        android:tag="hygiene_type"
+        android:tag="showSeekBarDialog"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/hygiene_image_button_time_of_day"
+        app:layout_constraintStart_toEndOf="@+id/hygiene_image_button_hygiene_time"
         app:layout_constraintTop_toBottomOf="@+id/hygiene_text_view_type"
         app:srcCompat="@android:color/holo_green_light" />
 

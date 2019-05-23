@@ -23,7 +23,7 @@
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="showTimePickerDialog"
+        android:onClick="showSeekBarDialog"
         android:tag="exercise_type"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"

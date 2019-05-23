@@ -65,7 +65,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 break;
             case MEALS:
                 object = new Sleep();
-                trackingNodeName = "meals";
+                trackingNodeName = "Meals";
                 viewFlipperDisplayChild = 1;
                 maxDataToCollect = 4;
                 currentDataCollected = 0;
@@ -211,6 +211,54 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                         calendar.get(Calendar.MINUTE));
                 break;
             }
+            case "exercise_time": {
+                long timeInMillis = calendar.getTimeInMillis();
+                ((Sleep) object).setAwakeTime(timeInMillis);
+                textViewById = findViewById(R.id.exercise_text_view_time);
+                textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you exercised at %d:%02d. ",
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE));
+                break;
+            }
+            case "restroom_time": {
+                long timeInMillis = calendar.getTimeInMillis();
+                ((Sleep) object).setAwakeTime(timeInMillis);
+                textViewById = findViewById(R.id.restroom_text_view_time);
+                textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you restroomed at %d:%02d. ",
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE));
+                break;
+            }
+            case "hygiene_time": {
+                long timeInMillis = calendar.getTimeInMillis();
+                ((Sleep) object).setAwakeTime(timeInMillis);
+                textViewById = findViewById(R.id.hygiene_text_view_time);
+                textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you bathed at %d:%02d. ",
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE));
+                break;
+            }
+            case "meditation_time": {
+                long timeInMillis = calendar.getTimeInMillis();
+                ((Sleep) object).setAwakeTime(timeInMillis);
+                textViewById = findViewById(R.id.meditation_text_view_time);
+                textToAppend = String.format(Locale.getDefault(), "On %d/%d/%d you meditated at %d:%02d. ",
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE));
+                break;
+            }
             default: {
                 textViewById = findViewById(R.id.generic_text_view_results);
                 textToAppend = "An unexpected occurrence. ";
@@ -240,12 +288,12 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
         switch (viewToUpdateTime) {
             case "sleep_quality": {
-                mapOfDescriptions.putAll(Sleep.qualities);
+                mapOfDescriptions.putAll(Sleep.sleepQualities);
                 textToDisplayPrefix = "Sleep quality: ";
                 break;
             }
             case "awake_feeling": {
-                mapOfDescriptions.putAll(Sleep.feelings);
+                mapOfDescriptions.putAll(Sleep.awakeFeelings);
                 textToDisplayPrefix = "Awake feeling: ";
                 break;
             }
@@ -272,22 +320,22 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         TextView textViewById;
         String textToAppend;
 
-        String translation = Sleep.qualities.get(seekBarSelection);
+        String translation = Sleep.sleepQualities.get(seekBarSelection);
 
         if (translation == null)
             translation = "indeterminate";
 
         switch (viewToUpdateTime) {
             case "sleep_quality": {
-                ((Sleep) object).setQuality(seekBarSelection);
-                translation = Sleep.qualities.get(seekBarSelection);
+                ((Sleep) object).setSleepQuality(seekBarSelection);
+                translation = Sleep.sleepQualities.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_sleep_quality);
                 textToAppend = "Quality of sleep was " + translation + ". ";
                 break;
             }
             case "awake_feeling": {
-                ((Sleep) object).setFeeling(seekBarSelection);
-                translation = Sleep.feelings.get(seekBarSelection);
+                ((Sleep) object).setAwakeFeeling(seekBarSelection);
+                translation = Sleep.awakeFeelings.get(seekBarSelection);
                 textViewById = findViewById(R.id.sleep_text_view_awake_feeling);
                 textToAppend = "You awoke feeling " + translation + ". ";
                 break;

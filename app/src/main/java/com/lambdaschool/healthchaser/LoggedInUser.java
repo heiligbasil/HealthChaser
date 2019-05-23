@@ -1,4 +1,4 @@
-package com.lambdaschool.healthchaser.healthpoints;
+package com.lambdaschool.healthchaser;
 
 import android.net.Uri;
 
