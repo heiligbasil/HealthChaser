@@ -2,7 +2,6 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -47,6 +46,30 @@
             android:id="@+id/meals"
             layout="@layout/meals" />
 
+        <include
+            android:id="@+id/mood"
+            layout="@layout/mood" />
+
+        <include
+            android:id="@+id/water"
+            layout="@layout/water" />
+
+        <include
+            android:id="@+id/exercise"
+            layout="@layout/exercise" />
+
+        <include
+            android:id="@+id/restroom"
+            layout="@layout/restroom" />
+
+        <include
+            android:id="@+id/hygiene"
+            layout="@layout/hygiene" />
+
+        <include
+            android:id="@+id/meditation"
+            layout="@layout/meditation" />
+
     </ViewFlipper>
 
     <Space
@@ -57,13 +80,13 @@
         android:id="@+id/generic_text_view_results"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/editbox_background"
-        android:lines="2"
-        android:maxLines="2"
         android:autoSizeMaxTextSize="20dp"
         android:autoSizeMinTextSize="1dp"
         android:autoSizeStepGranularity="1dp"
         android:autoSizeTextType="uniform"
+        android:background="@android:drawable/editbox_background"
+        android:lines="2"
+        android:maxLines="2"
         android:text=""
         android:textAlignment="center" />
 
@@ -87,10 +110,10 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/recycler_view_element"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        tools:listitem="@layout/recycler_view_element" />
 
 </LinearLayout>

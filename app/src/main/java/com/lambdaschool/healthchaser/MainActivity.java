@@ -2,6 +2,7 @@ package com.lambdaschool.healthchaser;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -122,9 +123,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
 
@@ -138,17 +138,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.navigation_menu_meals) {
 
+            Intent intent = new Intent(this, GenericMasterActivity.class);
+            intent.putExtra("tracking", Tracking.MEALS);
+            startActivity(intent);
+
         } else if (id == R.id.navigation_menu_mood) {
+
+            Intent intent = new Intent(this, GenericMasterActivity.class);
+            intent.putExtra("tracking", Tracking.MOOD);
+            startActivity(intent);
 
         } else if (id == R.id.navigation_menu_water) {
 
+            Intent intent = new Intent(this, GenericMasterActivity.class);
+            intent.putExtra("tracking", Tracking.WATER);
+            startActivity(intent);
+
         } else if (id == R.id.navigation_menu_exercise) {
+
+            Intent intent = new Intent(this, GenericMasterActivity.class);
+            intent.putExtra("tracking", Tracking.EXERCISE);
+            startActivity(intent);
 
         } else if (id == R.id.navigation_menu_restroom) {
 
+            Intent intent = new Intent(this, GenericMasterActivity.class);
+            intent.putExtra("tracking", Tracking.RESTROOM);
+            startActivity(intent);
+
         } else if (id == R.id.navigation_menu_hygiene) {
 
+            Intent intent = new Intent(this, GenericMasterActivity.class);
+            intent.putExtra("tracking", Tracking.HYGIENE);
+            startActivity(intent);
+
         } else if (id == R.id.navigation_menu_meditation) {
+
+            Intent intent = new Intent(this, GenericMasterActivity.class);
+            intent.putExtra("tracking", Tracking.MEDITATION );
+            startActivity(intent);
 
         } else if (id == R.id.navigation_menu_share) {
 

@@ -7,119 +7,119 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/sleep_text_view_sleep_time"
+        android:id="@+id/hygiene_text_view_time_of_day"
         android:layout_width="193dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Sleep time:"
+        android:text="Time of day:"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/sleep_image_button_sleep_time"
+        android:id="@+id/hygiene_image_button_time_of_day"
         android:layout_width="193dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="showTimePickerDialog"
-        android:tag="sleep_time"
+        android:tag="hygiene_time_of_day"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sleep_text_view_sleep_time"
+        app:layout_constraintTop_toBottomOf="@+id/hygiene_text_view_time_of_day"
         app:srcCompat="@android:color/holo_orange_light" />
 
     <TextView
-        android:id="@+id/sleep_text_view_awake_time"
+        android:id="@+id/hygiene_text_view_type"
         android:layout_width="194dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Awake time:"
+        android:text="Hygiene type:"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/sleep_text_view_sleep_time"
+        app:layout_constraintStart_toEndOf="@+id/hygiene_text_view_time_of_day"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/sleep_image_button_awake_time"
+        android:id="@+id/hygiene_image_button_type"
         android:layout_width="194dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="showTimePickerDialog"
-        android:tag="awake_time"
+        android:tag="hygiene_type"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/sleep_image_button_sleep_time"
-        app:layout_constraintTop_toBottomOf="@+id/sleep_text_view_awake_time"
+        app:layout_constraintStart_toEndOf="@+id/hygiene_image_button_time_of_day"
+        app:layout_constraintTop_toBottomOf="@+id/hygiene_text_view_type"
         app:srcCompat="@android:color/holo_green_light" />
 
     <Space
-        android:id="@+id/space2"
+        android:id="@+id/space4"
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sleep_image_button_awake_time" />
+        app:layout_constraintTop_toBottomOf="@id/hygiene_image_button_type" />
 
     <TextView
-        android:id="@+id/sleep_text_view_sleep_quality"
+        android:id="@+id/hygiene_text_view_duration"
         android:layout_width="193dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Sleep quality:"
+        android:text="Duration:"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/space2" />
+        app:layout_constraintTop_toBottomOf="@+id/space4" />
 
     <ImageButton
-        android:id="@+id/sleep_image_button_sleep_quality"
+        android:id="@+id/hygiene_image_button_duration"
         android:layout_width="193dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="showSeekBarDialog"
-        android:tag="sleep_quality"
+        android:tag="hygiene_duration"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sleep_text_view_sleep_quality"
+        app:layout_constraintTop_toBottomOf="@+id/hygiene_text_view_duration"
         app:srcCompat="@android:color/holo_blue_light" />
 
     <TextView
-        android:id="@+id/sleep_text_view_awake_feeling"
+        android:id="@+id/hygiene_text_view_temperature"
         android:layout_width="194dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Awake feeling:"
+        android:text="Temperature:"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sleep_text_view_sleep_quality"
-        app:layout_constraintTop_toBottomOf="@+id/space2" />
+        app:layout_constraintStart_toEndOf="@+id/hygiene_text_view_duration"
+        app:layout_constraintTop_toBottomOf="@+id/space4" />
 
     <ImageButton
-        android:id="@+id/sleep_image_button_awake_feeling"
+        android:id="@+id/hygiene_image_button_temperature"
         android:layout_width="194dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="showSeekBarDialog"
-        android:tag="awake_feeling"
+        android:tag="hygiene_temperature"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sleep_image_button_sleep_quality"
-        app:layout_constraintTop_toBottomOf="@+id/sleep_text_view_awake_feeling"
+        app:layout_constraintStart_toEndOf="@+id/hygiene_image_button_duration"
+        app:layout_constraintTop_toBottomOf="@+id/hygiene_text_view_temperature"
         app:srcCompat="@android:color/holo_red_light" />
 
 </android.support.constraint.ConstraintLayout>

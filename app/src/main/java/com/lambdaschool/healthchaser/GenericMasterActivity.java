@@ -37,6 +37,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     private Object object;
     private ImageButton pickerButton;
     private Button buttonSave;
+    private TextView textViewResults;
     int maxDataToCollect;
     int currentDataCollected;
 
@@ -44,6 +45,9 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generic_master);
+
+        TextView textViewHeading = findViewById(R.id.generic_text_view_heading);
+        textViewResults = findViewById(R.id.generic_text_view_results);
 
         Intent intent = getIntent();
         trackingType = (Tracking) intent.getSerializableExtra("tracking");
@@ -57,38 +61,71 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 viewFlipperDisplayChild = 0;
                 maxDataToCollect = 4;
                 currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_sleep);
                 break;
             case MEALS:
-                trackingNodeName = "";
-                viewFlipperDisplayChild = 0;
+                object = new Sleep();
+                trackingNodeName = "meals";
+                viewFlipperDisplayChild = 1;
+                maxDataToCollect = 4;
+                currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_meals);
                 break;
             case MOOD:
-                trackingNodeName = "";
-                viewFlipperDisplayChild = 0;
+                object = new Sleep();
+                trackingNodeName = "mood";
+                viewFlipperDisplayChild = 2;
+                maxDataToCollect = 2;
+                currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_mood);
                 break;
             case WATER:
-                trackingNodeName = "";
-                viewFlipperDisplayChild = 0;
+                object = new Sleep();
+                trackingNodeName = "water";
+                viewFlipperDisplayChild = 3;
+                maxDataToCollect = 2;
+                currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_water);
                 break;
             case EXERCISE:
-                trackingNodeName = "";
-                viewFlipperDisplayChild = 0;
+                object = new Sleep();
+                trackingNodeName = "exercise";
+                viewFlipperDisplayChild = 4;
+                maxDataToCollect = 4;
+                currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_exercise);
                 break;
             case RESTROOM:
-                trackingNodeName = "";
-                viewFlipperDisplayChild = 0;
+                object = new Sleep();
+                trackingNodeName = "restroom";
+                viewFlipperDisplayChild = 5;
+                maxDataToCollect = 4;
+                currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_restroom);
                 break;
             case HYGIENE:
-                trackingNodeName = "";
-                viewFlipperDisplayChild = 0;
+                object = new Sleep();
+                trackingNodeName = "hygiene";
+                viewFlipperDisplayChild = 6;
+                maxDataToCollect = 4;
+                currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_hygiene);
                 break;
             case MEDITATION:
-                trackingNodeName = "";
-                viewFlipperDisplayChild = 0;
+                object = new Sleep();
+                trackingNodeName = "meditation";
+                viewFlipperDisplayChild = 7;
+                maxDataToCollect = 4;
+                currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_meditation);
                 break;
             default:
-                trackingNodeName = "";
-                viewFlipperDisplayChild = 0;
+                object = new Sleep();
+                trackingNodeName = "sleep";
+                viewFlipperDisplayChild = 1;
+                maxDataToCollect = 4;
+                currentDataCollected = 0;
+                textViewHeading.setText(R.string.menu_sleep);
                 break;
         }
 
@@ -175,7 +212,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 break;
             }
             default: {
-                textViewById = findViewById(R.id.generic_text_view_heading);
+                textViewById = findViewById(R.id.generic_text_view_results);
                 textToAppend = "An unexpected occurrence. ";
                 break;
             }
@@ -183,6 +220,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
         textViewById.append(String.format(Locale.getDefault(), " %d:%02d", hourOfDay, minute));
         textViewById.setBackgroundColor(Color.YELLOW);
+        textViewResults.append(" " + textToAppend);
 
         pickerButton.setEnabled(false);
         pickerButton.setImageResource(R.color.colorGray);
@@ -191,8 +229,6 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         if (currentDataCollected == maxDataToCollect) {
             buttonSave.setEnabled(true);
         }
-
-        appendToSelections(textToAppend);
     }
 
     public void showSeekBarDialog(View v) {
@@ -214,8 +250,8 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 break;
             }
             default: {
-                mapOfDescriptions.putAll(Sleep.qualities);
-                textToDisplayPrefix = "Sleep quality: ";
+                mapOfDescriptions.put(0, "error");
+                textToDisplayPrefix = "An unexpected occurrence: ";
                 break;
             }
         }
@@ -257,16 +293,16 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
                 break;
             }
             default: {
-                ((Sleep) object).setQuality(seekBarSelection);
-                translation = Sleep.qualities.get(seekBarSelection);
-                textViewById = findViewById(R.id.sleep_text_view_sleep_quality);
-                textToAppend = "Quality of sleep was " + translation + ". ";
+                textViewById = findViewById(R.id.generic_text_view_results);
+                textToAppend = "error. ";
+                translation = "An unexpected occurrence: ";
                 break;
             }
         }
 
         textViewById.append(" " + translation);
         textViewById.setBackgroundColor(Color.YELLOW);
+        textViewResults.append(" " + textToAppend);
 
         pickerButton.setEnabled(false);
         pickerButton.setImageResource(R.color.colorGray);
@@ -275,11 +311,5 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         if (currentDataCollected == maxDataToCollect) {
             buttonSave.setEnabled(true);
         }
-
-        appendToSelections(textToAppend);
-    }
-
-    private void appendToSelections(String textToAppend) {
-        ((TextView) findViewById(R.id.generic_text_view_results)).append(" " + textToAppend);
     }
 }
