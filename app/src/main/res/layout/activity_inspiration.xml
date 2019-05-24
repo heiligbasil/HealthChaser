@@ -17,6 +17,16 @@
         android:textSize="50sp" />
 
     <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <Space
         android:layout_width="wrap_content"
         android:layout_height="30dp" />
 
@@ -55,4 +65,42 @@
             android:src="@drawable/clean_health_lifestyle" />
 
     </LinearLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="30dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/inspiration_button_view_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickToView"
+            android:tag="https://gph.is/2upTHvW"
+            android:text="View" />
+
+        <Button
+            android:id="@+id/inspiration_button_view_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickToView"
+            android:tag="https://gph.is/1TEeoGs"
+            android:text="View" />
+
+        <Button
+            android:id="@+id/inspiration_button_view_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickToView"
+            android:tag="https://gph.is/g/4VXWd6a"
+            android:text="View" />
+
+    </LinearLayout>
+
 </LinearLayout>
