@@ -1,6 +1,7 @@
 package com.lambdaschool.healthchaser;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -10,18 +11,24 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
+import com.lambdaschool.healthchaser.connectivity.LoggedInUser;
+import com.lambdaschool.healthchaser.connectivity.LoggedInUserDao;
 import com.lambdaschool.healthchaser.connectivity.Weather;
 import com.lambdaschool.healthchaser.connectivity.WeatherDao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -35,18 +42,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int REQUEST_CODE_SIGN_IN = 55;
 
 
-    TextView defaultTextView;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        defaultTextView = findViewById(R.id.main_text_view);
-
-        WeatherDao weatherDao = new WeatherDao();
-        Weather weather = weatherDao.getWeather();
 
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -90,8 +89,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 currentLoggedInUser = new LoggedInUser(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()));
-
-                defaultTextView.append(" " + currentLoggedInUser.getDisplayName());
+                ((TextView) findViewById(R.id.main_activity_text_view_user_name)).append(" " + currentLoggedInUser.getDisplayName());
+                ((TextView) findViewById(R.id.main_activity_text_view_user_email)).append(" " + currentLoggedInUser.getEmail());
+                LoggedInUserDao loggedInUserDao = new LoggedInUserDao();
+                Bitmap currentloggedInUserImage = loggedInUserDao.getImage(currentLoggedInUser.getPhotoUrl().toString());
+                if (currentloggedInUserImage != null)
+                    ((ImageView) findViewById(R.id.main_activity_image_view_user_photo)).setImageBitmap(currentloggedInUserImage);
 
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -99,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // response.getError().getErrorCode() and handle the error.
                 // ...
             }
+
+            displayWeatherData();
         }
     }
 
@@ -206,4 +211,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
     }
 
+    private void displayWeatherData() {
+        WeatherDao weatherDao = new WeatherDao();
+        Weather weather = weatherDao.getWeather();
+        ArrayList<Bitmap> weatherIcons = weatherDao.getImage(weather.getWeatherIconId());
+        ((ImageView) findViewById(R.id.main_activity_image_view_weather_icon)).setImageBitmap(weatherIcons.get(0));
+        if (weatherIcons.size() > 1) {
+            for (int i = 1; i < weatherIcons.size(); ++i) {
+                ImageView imageView = new ImageView(this);
+                imageView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
+                imageView.setImageBitmap(weatherIcons.get(i));
+                ((LinearLayout) findViewById(R.id.main_activity_linear_layout_weather)).addView(imageView, 1);
+            }
+        }
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_city)).append(weather.getCityAndIdAndCountryCode());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_cloudiness)).append(weather.getCloudinessPercentage() + "%");
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_humidity)).append(String.valueOf(weather.getHumidity()));
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_coordinates)).append(weather.getCoordinates());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_pressure)).append(String.valueOf(weather.getPressure()));
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_sunrise)).append(String.valueOf(weather.getSunriseTime()));
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_sunset)).append(String.valueOf(weather.getSunsetTime()));
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_temperature)).append(weather.getTemperature() + "°");
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_visibility)).append(String.valueOf(weather.getVisibility()));
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_description)).append(weather.getWeatherDescription());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_wind)).append(weather.getWindSpeedAndDegrees());
+
+        ((CardView) findViewById(R.id.main_activity_card_view_weather)).setVisibility(View.VISIBLE);
+    }
 }

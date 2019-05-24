@@ -1,14 +1,21 @@
 package com.lambdaschool.healthchaser.connectivity;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class WeatherDao {
     private static final String URL_BASE = "https://api.openweathermap.org/data/2.5/weather?";
     private static final String URL_MIDDLE = "q=jefferson";
     private static final String URL_ENDING = "&units=imperial&APPID=9c8359f38c54ef6dec64ac6d3dc0b438";
     private static final String URL_READ_ALL = URL_BASE + URL_MIDDLE + URL_ENDING;
+    private static final String URL_IMAGE = "https://openweathermap.org/img/w/%s.png";
+
 
     public Weather getWeather() {
         final Weather weather = new Weather();
@@ -16,7 +23,6 @@ public class WeatherDao {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-
 
                 JSONObject jsonObject = null;
                 JSONArray jsonArray = null;
@@ -73,5 +79,30 @@ public class WeatherDao {
         }
 
         return weather;
+    }
+
+    public ArrayList<Bitmap> getImage(final ArrayList<String> imageIds) {
+        final ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                for (String id : imageIds)
+                    bitmaps.add(NetworkAdapter.httpImageRequest(String.format(Locale.getDefault(), URL_IMAGE, id)));
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (
+                InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return bitmaps;
     }
 }

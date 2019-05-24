@@ -1,4 +1,4 @@
-package com.lambdaschool.healthchaser;
+package com.lambdaschool.healthchaser.connectivity;
 
 import android.net.Uri;
 

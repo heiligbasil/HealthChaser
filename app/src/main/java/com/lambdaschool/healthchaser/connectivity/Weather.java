@@ -123,8 +123,13 @@ public class Weather {
         this.countryCode = countryCode;
     }
 
-    public ArrayList<String> getWeatherDescription() {
-        return weatherDescription;
+    public String getWeatherDescription() {
+        StringBuilder weatherBuilder = new StringBuilder();
+
+        for (String description : this.weatherDescription)
+            weatherBuilder.append(description).append(", ");
+
+        return weatherBuilder.toString().substring(0, weatherBuilder.length() - 2);
     }
 
     public void setWeatherDescription(String weatherDescription) {
@@ -137,5 +142,17 @@ public class Weather {
 
     public void setWeatherIconId(String weatherIconId) {
         this.weatherIconId.add(weatherIconId);
+    }
+
+    public String getCoordinates() {
+        return this.latitude + ", " + this.longitude;
+    }
+
+    public String getCityAndIdAndCountryCode() {
+        return this.cityName + " (" + this.cityId + ") in " + this.countryCode;
+    }
+
+    public String getWindSpeedAndDegrees() {
+        return this.windSpeed + "mph, blowing " + this.windDegrees + "°";
     }
 }
