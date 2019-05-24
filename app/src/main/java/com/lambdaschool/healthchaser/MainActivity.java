@@ -165,9 +165,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+/*        if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String convertEpochToDateTime(long epoch) {
         Date date = new Date(epoch * 1000L);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyy HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.getDefault());
         //simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT-7"));
 
         return simpleDateFormat.format(date);
