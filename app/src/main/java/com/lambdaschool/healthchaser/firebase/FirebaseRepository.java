@@ -3,7 +3,6 @@ package com.lambdaschool.healthchaser.firebase;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.lambdaschool.healthchaser.MainActivity.Tracking;
-import com.lambdaschool.healthchaser.firebase.FirebaseDao;
 
 import java.util.ArrayList;
 

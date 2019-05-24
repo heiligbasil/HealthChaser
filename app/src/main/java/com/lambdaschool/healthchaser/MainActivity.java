@@ -19,10 +19,13 @@ import android.widget.TextView;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
+import com.lambdaschool.healthchaser.connectivity.Weather;
+import com.lambdaschool.healthchaser.connectivity.WeatherDao;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,11 +34,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static LoggedInUser currentLoggedInUser;
     private static final int REQUEST_CODE_SIGN_IN = 55;
 
+
+    TextView defaultTextView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        defaultTextView = findViewById(R.id.main_text_view);
+
+        WeatherDao weatherDao = new WeatherDao();
+        Weather weather = weatherDao.getWeather();
 
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -79,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 currentLoggedInUser = new LoggedInUser(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()));
-                ((TextView) findViewById(R.id.main_text_view)).append(" " + currentLoggedInUser.getDisplayName());
+
+                defaultTextView.append(" " + currentLoggedInUser.getDisplayName());
 
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -174,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.navigation_menu_meditation) {
 
             Intent intent = new Intent(this, GenericMasterActivity.class);
-            intent.putExtra("tracking", Tracking.MEDITATION );
+            intent.putExtra("tracking", Tracking.MEDITATION);
             startActivity(intent);
 
         } else if (id == R.id.navigation_menu_share) {
@@ -193,4 +205,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseAuth.getInstance().signOut();
         super.onDestroy();
     }
+
 }
