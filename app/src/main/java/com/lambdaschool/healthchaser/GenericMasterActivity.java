@@ -4,12 +4,14 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -44,7 +46,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     private Tracking trackingType;
     private String path;
     private GenericMasterActivityAdapter genericMasterActivityAdapter;
-    static String corespondingTaggedView;
+    static String correspondingTaggedView;
     private Object object;
     private ImageButton pickerButton;
     private Button buttonSave;
@@ -56,6 +58,15 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generic_master);
+
+        final MediaPlayer mediaPlayer = MediaPlayer.create(this, SoundEffectsFactory.SOUND_EFFECTS_IDS[(int) (Math.random() * SoundEffectsFactory.SOUND_EFFECTS_IDS.length)]);
+        mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mediaPlayer.release();
+            }
+        });
 
         TextView textViewHeading = findViewById(R.id.generic_text_view_heading);
         textViewResults = findViewById(R.id.generic_text_view_results);
@@ -178,7 +189,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
     public void showTimePickerDialog(View v) {
         pickerButton = (ImageButton) v;
-        corespondingTaggedView = (String) pickerButton.getTag();
+        correspondingTaggedView = (String) pickerButton.getTag();
 
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.setCancelable(false);
@@ -196,7 +207,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         TextView textViewById;
         String textToAppend;
 
-        switch (corespondingTaggedView) {
+        switch (correspondingTaggedView) {
             case "sleep_time": {
                 calendar.add(Calendar.DATE, -1);
                 long timeInMillis = calendar.getTimeInMillis();
@@ -292,12 +303,12 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
     public void showSeekBarDialog(View v) {
         pickerButton = (ImageButton) v;
-        corespondingTaggedView = (String) pickerButton.getTag();
+        correspondingTaggedView = (String) pickerButton.getTag();
 
         HashMap<Integer, String> mapOfDescriptions = new HashMap<>();
         String textToDisplayPrefix;
 
-        switch (corespondingTaggedView) {
+        switch (correspondingTaggedView) {
             case "sleep_quality": {
                 mapOfDescriptions.putAll(Sleep.sleepQualities);
                 textToDisplayPrefix = "Sleep quality: ";
@@ -398,7 +409,7 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
         String translation;
 
-        switch (corespondingTaggedView) {
+        switch (correspondingTaggedView) {
             case "sleep_quality": {
                 ((Sleep) object).setSleepQuality(seekBarSelection);
                 translation = Sleep.sleepQualities.get(seekBarSelection);
@@ -527,13 +538,13 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
 
     public void showNumberPickerDialog(View v) {
         pickerButton = (ImageButton) v;
-        corespondingTaggedView = (String) pickerButton.getTag();
+        correspondingTaggedView = (String) pickerButton.getTag();
 
         String unitsForNumberPicker;
         int minValueForNumberPicker;
         int maxValueForNumberPicker;
 
-        switch (corespondingTaggedView) {
+        switch (correspondingTaggedView) {
             case "food_amount": {
                 unitsForNumberPicker = "portions";
                 minValueForNumberPicker = 0;
@@ -602,52 +613,52 @@ public class GenericMasterActivity extends AppCompatActivity implements TimePick
         String textToAppend;
         String translation;
 
-        switch (corespondingTaggedView) {
+        switch (correspondingTaggedView) {
             case "food_amount": {
                 ((Meals) object).setFoodAmount(numberPickerSelection);
-                translation = " "+numberPickerSelection+" portions";
+                translation = " " + numberPickerSelection + " portions";
                 textViewById = findViewById(R.id.meals_text_view_food_amount);
                 textToAppend = " You ate " + translation + ". ";
                 break;
             }
             case "water_quantity": {
                 ((Water) object).setWaterQuantity(numberPickerSelection);
-                translation = " "+numberPickerSelection+ " glasses";
+                translation = " " + numberPickerSelection + " glasses";
                 textViewById = findViewById(R.id.water_text_view_quantity);
                 textToAppend = " You drank " + translation + ". ";
                 break;
             }
             case "exercise_duration": {
                 ((Exercise) object).setExerciseDuration(numberPickerSelection);
-                translation = " "+numberPickerSelection+" minutes";
+                translation = " " + numberPickerSelection + " minutes";
                 textViewById = findViewById(R.id.exercise_text_view_duration);
                 textToAppend = " You exercised for " + translation + ". ";
                 break;
             }
             case "restroom_duration": {
                 ((Restroom) object).setRestroomDuration(numberPickerSelection);
-                translation = " "+numberPickerSelection+" minutes";
+                translation = " " + numberPickerSelection + " minutes";
                 textViewById = findViewById(R.id.restroom_text_view_duration);
                 textToAppend = " Your restroom visits lasted an average of " + translation + ". ";
                 break;
             }
             case "restroom_amount": {
                 ((Restroom) object).setRestroomAmount(numberPickerSelection);
-                translation = " "+numberPickerSelection+" times";
+                translation = " " + numberPickerSelection + " times";
                 textViewById = findViewById(R.id.restroom_text_view_amount);
                 textToAppend = " You visited the restroom " + translation + ". ";
                 break;
             }
             case "hygiene_duration": {
                 ((Hygiene) object).setHygieneDuration(numberPickerSelection);
-                translation = " "+numberPickerSelection+" minutes";
+                translation = " " + numberPickerSelection + " minutes";
                 textViewById = findViewById(R.id.hygiene_text_view_duration);
                 textToAppend = " Your hygiene time lasted " + translation + ". ";
                 break;
             }
             case "meditation_duration": {
                 ((Meditation) object).setMeditationDuration(numberPickerSelection);
-                translation = " "+numberPickerSelection+" minutes";
+                translation = " " + numberPickerSelection + " minutes";
                 textViewById = findViewById(R.id.meditation_text_view_duration);
                 textToAppend = " You spent " + translation + " in meditation. ";
                 break;

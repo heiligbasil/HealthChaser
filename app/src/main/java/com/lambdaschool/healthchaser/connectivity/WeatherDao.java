@@ -13,11 +13,21 @@ public class WeatherDao {
     private static final String URL_BASE = "https://api.openweathermap.org/data/2.5/weather?";
     private static final String URL_MIDDLE = "q=jefferson";
     private static final String URL_ENDING = "&units=imperial&APPID=9c8359f38c54ef6dec64ac6d3dc0b438";
-    private static final String URL_READ_ALL = URL_BASE + URL_MIDDLE + URL_ENDING;
+    private static final String URL_FULL = URL_BASE + URL_MIDDLE + URL_ENDING;
     private static final String URL_IMAGE = "https://openweathermap.org/img/w/%s.png";
 
-
     public Weather getWeather() {
+        return getWeather(null);
+    }
+
+    public Weather getWeather(String urlParameters) {
+        final String completeUrl;
+        if (urlParameters == null) {
+            completeUrl = URL_FULL;
+        } else {
+            completeUrl = URL_BASE + urlParameters + URL_ENDING;
+        }
+
         final Weather weather = new Weather();
 
         Runnable runnable = new Runnable() {
@@ -30,7 +40,7 @@ public class WeatherDao {
                 try {
                     jsonObject = new JSONObject();
 
-                    String returnedJsonAsString = NetworkAdapter.httpRequest(URL_READ_ALL);
+                    String returnedJsonAsString = NetworkAdapter.httpRequest(completeUrl);
 
                     jsonObject = new JSONObject(returnedJsonAsString);
 

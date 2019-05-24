@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void displayWeatherData() {
         WeatherDao weatherDao = new WeatherDao();
-        Weather weather = weatherDao.getWeather();
+        Weather weather = weatherDao.getWeather("lat=47.6&lon=-122.33");
         ArrayList<Bitmap> weatherIcons = weatherDao.getImage(weather.getWeatherIconId());
         ((ImageView) findViewById(R.id.main_activity_image_view_weather_icon)).setImageBitmap(weatherIcons.get(0));
         if (weatherIcons.size() > 1) {
