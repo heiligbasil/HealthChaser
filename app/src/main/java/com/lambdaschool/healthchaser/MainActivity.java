@@ -268,6 +268,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ((TextView) findViewById(R.id.main_activity_text_view_weather_description)).setText("Description: " + weather.getWeatherDescription());
         ((TextView) findViewById(R.id.main_activity_text_view_weather_wind)).setText("Wind: " + weather.getWindSpeedAndDegrees());
         ((CardView) findViewById(R.id.main_activity_card_view_weather)).setVisibility(View.VISIBLE);
+        ((CardView) findViewById(R.id.main_activity_card_view_reminder)).setVisibility(View.VISIBLE);
+        ((CardView) findViewById(R.id.main_activity_card_view_user)).setVisibility(View.VISIBLE);
 
         convertEpochToDateTime(weather.getSunriseTime());
     }
