@@ -194,7 +194,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             intent.putExtra("tracking", Tracking.MEDITATION);
             startActivity(intent);
 
-        } else if (id == R.id.navigation_menu_share) {
+        } else if (id == R.id.navigation_menu_inspiration) {
+
+            startActivity(new Intent(this, InspirationActivity.class));
 
         } else if (id == R.id.navigation_menu_send) {
 
