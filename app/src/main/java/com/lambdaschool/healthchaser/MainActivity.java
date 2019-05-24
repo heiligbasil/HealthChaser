@@ -1,12 +1,19 @@
 package com.lambdaschool.healthchaser;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,16 +29,23 @@ import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lambdaschool.healthchaser.connectivity.LoggedInUser;
 import com.lambdaschool.healthchaser.connectivity.LoggedInUserDao;
 import com.lambdaschool.healthchaser.connectivity.Weather;
 import com.lambdaschool.healthchaser.connectivity.WeatherDao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,12 +54,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static LoggedInUser currentLoggedInUser;
     private static final int REQUEST_CODE_SIGN_IN = 55;
+    Context context;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this;
 
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -67,7 +84,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, "Refreshing weather data!", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 33);
+                } else {
+
+                    FusedLocationProviderClient locationProviderClient = LocationServices.getFusedLocationProviderClient(context);
+                    locationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                displayWeatherData(String.format(Locale.getDefault(), "lat=%f&lon=%f", location.getLatitude(), location.getLongitude()));
+                            }
+                        }
+                    });
+                }
             }
         });
 
@@ -91,10 +123,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 currentLoggedInUser = new LoggedInUser(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()));
                 ((TextView) findViewById(R.id.main_activity_text_view_user_name)).append(" " + currentLoggedInUser.getDisplayName());
                 ((TextView) findViewById(R.id.main_activity_text_view_user_email)).append(" " + currentLoggedInUser.getEmail());
+                ((TextView) findViewById(R.id.navigation_header_text_view)).setText(" " + currentLoggedInUser.getDisplayName());
                 LoggedInUserDao loggedInUserDao = new LoggedInUserDao();
-                Bitmap currentloggedInUserImage = loggedInUserDao.getImage(currentLoggedInUser.getPhotoUrl().toString());
-                if (currentloggedInUserImage != null)
-                    ((ImageView) findViewById(R.id.main_activity_image_view_user_photo)).setImageBitmap(currentloggedInUserImage);
+                Bitmap currentLoggedInUserImage = loggedInUserDao.getImage(currentLoggedInUser.getPhotoUrl().toString());
+                if (currentLoggedInUserImage != null)
+                    ((ImageView) findViewById(R.id.main_activity_image_view_user_photo)).setImageBitmap(currentLoggedInUserImage);
 
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -103,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // ...
             }
 
-            displayWeatherData();
+            displayWeatherData("lat=47.6&lon=-122.33");
         }
     }
 
@@ -144,9 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int id = item.getItemId();
 
-        if (id == R.id.navigation_menu_summary) {
-
-        } else if (id == R.id.navigation_menu_sleep) {
+        if (id == R.id.navigation_menu_sleep) {
 
             Intent intent = new Intent(this, GenericMasterActivity.class);
             intent.putExtra("tracking", Tracking.SLEEP);
@@ -198,8 +229,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             startActivity(new Intent(this, InspirationActivity.class));
 
-        } else if (id == R.id.navigation_menu_send) {
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -213,9 +242,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
     }
 
-    private void displayWeatherData() {
+    private void displayWeatherData(String coordinatesParameter) {
+
         WeatherDao weatherDao = new WeatherDao();
-        Weather weather = weatherDao.getWeather("lat=47.6&lon=-122.33");
+        Weather weather = weatherDao.getWeather(coordinatesParameter);
         ArrayList<Bitmap> weatherIcons = weatherDao.getImage(weather.getWeatherIconId());
         ((ImageView) findViewById(R.id.main_activity_image_view_weather_icon)).setImageBitmap(weatherIcons.get(0));
         if (weatherIcons.size() > 1) {
@@ -226,18 +256,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ((LinearLayout) findViewById(R.id.main_activity_linear_layout_weather)).addView(imageView, 1);
             }
         }
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_city)).append(weather.getCityAndIdAndCountryCode());
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_cloudiness)).append(weather.getCloudinessPercentage() + "%");
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_humidity)).append(String.valueOf(weather.getHumidity()));
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_coordinates)).append(weather.getCoordinates());
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_pressure)).append(String.valueOf(weather.getPressure()));
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_sunrise)).append(String.valueOf(weather.getSunriseTime()));
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_sunset)).append(String.valueOf(weather.getSunsetTime()));
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_temperature)).append(weather.getTemperature() + "°");
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_visibility)).append(String.valueOf(weather.getVisibility()));
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_description)).append(weather.getWeatherDescription());
-        ((TextView) findViewById(R.id.main_activity_text_view_weather_wind)).append(weather.getWindSpeedAndDegrees());
-
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_city)).setText("City: " + weather.getCityAndIdAndCountryCode());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_cloudiness)).setText("Cloudiness: " + weather.getCloudinessPercentage() + "%");
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_humidity)).setText("Humidity: " + weather.getHumidity());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_coordinates)).setText("Coordinates: " + weather.getCoordinates());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_pressure)).setText("Pressure: " + weather.getPressure());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_sunrise)).setText("Sunrise: " + convertEpochToDateTime(weather.getSunriseTime()));
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_sunset)).setText("Sunset: " + convertEpochToDateTime(weather.getSunsetTime()));
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_temperature)).setText("Temperature: " + weather.getTemperature() + "°");
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_visibility)).setText("Visibility: " + weather.getVisibility());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_description)).setText("Description: " + weather.getWeatherDescription());
+        ((TextView) findViewById(R.id.main_activity_text_view_weather_wind)).setText("Wind: " + weather.getWindSpeedAndDegrees());
         ((CardView) findViewById(R.id.main_activity_card_view_weather)).setVisibility(View.VISIBLE);
+
+        convertEpochToDateTime(weather.getSunriseTime());
+    }
+
+    private String convertEpochToDateTime(long epoch) {
+        Date date = new Date(epoch * 1000L);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyy HH:mm:ss", Locale.getDefault());
+        //simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT-7"));
+
+        return simpleDateFormat.format(date);
     }
 }

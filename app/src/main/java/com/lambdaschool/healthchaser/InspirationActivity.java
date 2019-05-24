@@ -49,8 +49,6 @@ public class InspirationActivity extends AppCompatActivity {
         drawable = imageViewGif3.getDrawable();
         animatedImageDrawable = (AnimatedImageDrawable) drawable;
         animatedImageDrawable.start();
-
-
     }
 
     public void onClickToView(View view) {
