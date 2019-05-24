@@ -1,10 +1,11 @@
-package com.lambdaschool.healthchaser;
+package com.lambdaschool.healthchaser.firebase;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.lambdaschool.healthchaser.MainActivity.Tracking;
+import com.lambdaschool.healthchaser.firebase.FirebaseRepository;
 
 import java.util.ArrayList;
 

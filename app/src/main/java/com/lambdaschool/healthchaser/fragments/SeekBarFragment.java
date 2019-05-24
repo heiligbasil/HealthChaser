@@ -1,4 +1,4 @@
-package com.lambdaschool.healthchaser;
+package com.lambdaschool.healthchaser.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,13 +11,15 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.lambdaschool.healthchaser.R;
+
 import java.util.HashMap;
 
 
 public class SeekBarFragment extends DialogFragment {
 
-    static final String ARG_PARAM1 = "param1";
-    static final String ARG_PARAM2 = "param2";
+    public static final String ARG_PARAM1 = "param1";
+    public static final String ARG_PARAM2 = "param2";
 
     private HashMap<Integer, String> mParam1;
     private String mParam2;

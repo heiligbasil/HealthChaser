@@ -18,6 +18,10 @@ import android.widget.ViewFlipper;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.lambdaschool.healthchaser.firebase.FirebaseViewModel;
+import com.lambdaschool.healthchaser.fragments.NumberPickerFragment;
+import com.lambdaschool.healthchaser.fragments.SeekBarFragment;
+import com.lambdaschool.healthchaser.fragments.TimePickerFragment;
 import com.lambdaschool.healthchaser.healthpoints.Exercise;
 import com.lambdaschool.healthchaser.healthpoints.Hygiene;
 import com.lambdaschool.healthchaser.healthpoints.Meals;
@@ -35,7 +39,7 @@ import java.util.Locale;
 import static com.lambdaschool.healthchaser.MainActivity.Tracking;
 import static com.lambdaschool.healthchaser.MainActivity.currentLoggedInUser;
 
-public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener, SeekBarFragment.OnSeekBarFragmentInteractionListener,NumberPickerFragment.OnNumberPickerFragmentInteractionListener {
+public class GenericMasterActivity extends AppCompatActivity implements TimePickerFragment.OnCompleteListener, SeekBarFragment.OnSeekBarFragmentInteractionListener, NumberPickerFragment.OnNumberPickerFragmentInteractionListener {
 
     private Tracking trackingType;
     private String path;

@@ -1,4 +1,4 @@
-package com.lambdaschool.healthchaser;
+package com.lambdaschool.healthchaser.firebase;
 
 import android.support.annotation.NonNull;
 

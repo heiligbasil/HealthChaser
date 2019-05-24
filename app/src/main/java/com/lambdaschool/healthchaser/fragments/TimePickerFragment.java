@@ -1,4 +1,4 @@
-package com.lambdaschool.healthchaser;
+package com.lambdaschool.healthchaser.fragments;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
