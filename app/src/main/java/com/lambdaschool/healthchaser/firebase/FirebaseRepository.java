@@ -1,6 +1,6 @@
 package com.lambdaschool.healthchaser.firebase;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.lambdaschool.healthchaser.MainActivity.Tracking;
 

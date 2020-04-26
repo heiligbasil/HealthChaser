@@ -1,6 +1,6 @@
 package com.lambdaschool.healthchaser.healthpoints;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
