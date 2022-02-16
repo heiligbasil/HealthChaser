@@ -15,7 +15,7 @@
         android:roundIcon="@drawable/ic_run_24dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InspirationActivity"></activity>
+        <activity android:name=".InspirationActivity" />
         <activity android:name=".GenericMasterActivity" />
         <activity
             android:name=".MainActivity"
