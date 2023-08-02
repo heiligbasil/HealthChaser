@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 33
     defaultConfig {
+        compileSdk 33
         applicationId "com.lambdaschool.healthchaser"
         minSdkVersion 28
         targetSdkVersion 33
