@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HealthChaser.iml" filepath="$PROJECT_DIR$/HealthChaser.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HealthChaser.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HealthChaser.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HealthChaser.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HealthChaser.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HealthChaser.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HealthChaser.app.main.iml" />
