@@ -3,10 +3,10 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     defaultConfig {
-        compileSdkVersion 36
+        compileSdkVersion 37
         applicationId "com.lambdaschool.healthchaser"
         minSdkVersion 28
-        targetSdkVersion 36
+        targetSdkVersion 37
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
